@@ -138,6 +138,7 @@ return [
     'pages.status_published' => 'Xuất bản',
     'pages.status_hidden' => 'Ẩn',
     'pages.field_published_at' => 'Thời điểm xuất bản (giờ Việt Nam)',
+    'pages.published_at_current' => 'Giá trị đã chọn: :time (dd/mm/yyyy giờ:phút)',
     'pages.published_at_hint' => 'Để trống = xuất bản ngay. Chọn thời điểm trong tương lai để hẹn giờ.',
     'pages.scheduled' => 'Hẹn giờ :time',
     'pages.preview' => 'Xem trước',

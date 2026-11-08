@@ -100,6 +100,12 @@ final class UsersTest extends HttpTestCase
         $this->get('/admin');
         $this->assertRedirect('/admin/login?next=%2Fadmin');
 
+        // Sai mật khẩu: không để lộ rằng tài khoản đang bị khoá
+        $this->post('/admin/login', ['email' => 'victim@example.com', 'password' => 'WrongPass9']);
+        $this->assertStatus(422);
+        $this->assertSee('Email hoặc mật khẩu không đúng.');
+        $this->assertDontSee('đã bị khoá');
+
         $this->post('/admin/login', ['email' => 'victim@example.com', 'password' => 'Secret123']);
         $this->assertStatus(422);
         $this->assertSee('Tài khoản đã bị khoá. Vui lòng liên hệ quản trị viên.');

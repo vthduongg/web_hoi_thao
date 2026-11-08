@@ -67,6 +67,14 @@ function format_date(DateTimeInterface|string|null $value, string $style = 'publ
     return $date->format($format);
 }
 
+/** Giá trị ô datetime-local (giờ Việt Nam, "2026-03-10T09:00") hiển thị dạng "10/03/2026 09:00"; sai dạng → rỗng. */
+function local_input_to_display(?string $localDateTime): string
+{
+    $date = DateTimeImmutable::createFromFormat('!Y-m-d\TH:i', (string) $localDateTime);
+
+    return $date === false ? '' : $date->format('d/m/Y H:i');
+}
+
 /** Render một khối template con (partial) và trả về HTML. */
 function partial(string $name, array $vars = []): string
 {

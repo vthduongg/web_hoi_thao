@@ -41,6 +41,10 @@
     relative_urls: false,
     convert_urls: false,
     image_description: true,
+    // Không chèn style viết trong thẻ (bị CSP trang công khai chặn); bảng lấy kiểu từ public.css
+    table_default_styles: {},
+    table_style_by_css: false,
+    table_sizing_mode: 'responsive',
     setup: function (editor) {
       editor.ui.registry.addButton('library', {
         text: textarea.getAttribute('data-library-label'),

@@ -188,6 +188,15 @@ final class Database
         }
     }
 
+    /**
+     * Mẫu "chứa chuỗi" cho LIKE, coi % _ [ \ là ký tự thường.
+     * Câu SQL phải dùng kèm ESCAPE '\', ví dụ: "name LIKE ? ESCAPE '\'".
+     */
+    public static function likeContains(string $text): string
+    {
+        return '%' . addcslashes($text, '\\%_[') . '%';
+    }
+
     /** Đổi bool thành 0/1 để SQL Server nhận đúng kiểu BIT. */
     private static function normalize(array $params): array
     {

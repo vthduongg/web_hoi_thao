@@ -10,7 +10,12 @@ namespace App\Services;
  */
 final class SamplePages
 {
-    /** @return list<array{slug: string, title: string, module: string, body: string}> */
+    /**
+     * Hàm dài hơn 40 dòng có chủ đích (constitution, Nguyên tắc I — "có lý do ghi rõ"):
+     * đây chỉ là một danh sách dữ liệu tĩnh, không có logic; tách nhỏ không làm dễ đọc hơn.
+     *
+     * @return list<array{slug: string, title: string, module: string, body: string}>
+     */
     public static function all(): array
     {
         return [

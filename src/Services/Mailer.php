@@ -17,7 +17,7 @@ final class Mailer
     /** @var list<array{to: string, subject: string, body: string}> thư đã "gửi" khi chạy test */
     public array $sent = [];
 
-    private function __construct(private readonly bool $fake)
+    private function __construct(private readonly bool $fake, private readonly bool $failing = false)
     {
     }
 
@@ -26,14 +26,18 @@ final class Mailer
         return new self($environment === 'testing');
     }
 
-    public static function fake(): self
+    /** Mailer giả cho test; $failing = true thì mọi lần gửi đều báo lỗi (giả lập SMTP hỏng). */
+    public static function fake(bool $failing = false): self
     {
-        return new self(true);
+        return new self(true, $failing);
     }
 
-    /** @throws \PHPMailer\PHPMailer\Exception khi không gửi được */
+    /** @throws \RuntimeException khi không gửi được */
     public function send(string $to, string $subject, string $htmlBody): void
     {
+        if ($this->failing) {
+            throw new \RuntimeException('Giả lập lỗi gửi thư');
+        }
         if ($this->fake) {
             $this->sent[] = ['to' => $to, 'subject' => $subject, 'body' => $htmlBody];
 

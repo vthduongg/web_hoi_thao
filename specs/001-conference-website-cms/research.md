@@ -203,6 +203,15 @@ tượng (III), đơn giản (IV), tối thiểu thư viện (V).
 Tất cả phiên bản được khoá trong `composer.lock` và `package-lock.json`; TinyMCE (kèm gói ngôn ngữ `vi`) ghi rõ
 phiên bản trong thư mục vendor.
 
+## R19. Ba bổ sung nhỏ ngoài plan ban đầu (ghi nhận sau /speckit-converge)
+
+- **Header `X-Frame-Options: SAMEORIGIN`** (`src/Core/App.php`): chặn trang web khác nhúng website/trang quản trị vào
+  iframe để lừa bấm (clickjacking). Một dòng, không phụ thuộc thư viện; bổ sung cho R18.
+- **Tự tạo CSDL nếu chưa có** (`Database::createIfMissing`, dùng bởi `bin/migrate.php` và test): người mới không phải
+  tạo `conference` / `conference_test` bằng tay trước khi chạy migrate (đúng mục tiêu "dễ cho người mới").
+- **Biến `APP_DEBUG_ERRORS=1`** (`src/Core/App.php`): chỉ có tác dụng khi `APP_ENV=testing`; cho phép ném lại lỗi
+  gốc thay vì trang 500 để dễ tìm nguyên nhân khi một test hỏng. Không ảnh hưởng môi trường chạy thật.
+
 ## R18. Chính sách bảo mật nội dung (CSP)
 
 - **Decision**: Hai chính sách riêng, gửi bằng header từ `App`:

@@ -42,6 +42,18 @@ final class MediaPickerTest extends HttpTestCase
         $this->assertDontSee('Hướng dẫn trình bày.pdf');
     }
 
+    public function test_search_treats_percent_underscore_and_bracket_literally(): void
+    {
+        $this->createMedia(['original_name' => 'Tỉ lệ 100%_xong [bản 1].pdf', 'stored_path' => 'uploads/t/a.pdf', 'kind' => 'document', 'mime_type' => 'application/pdf']);
+        $this->createMedia(['original_name' => 'Tỉ lệ 100abxong.pdf', 'stored_path' => 'uploads/t/b.pdf', 'kind' => 'document', 'mime_type' => 'application/pdf']);
+        $this->loginAs('editor');
+
+        $this->get('/admin/media/picker?q=' . rawurlencode('100%_xong [bản'));
+
+        $this->assertSee('Tỉ lệ 100%_xong [bản 1].pdf');
+        $this->assertDontSee('Tỉ lệ 100abxong.pdf');
+    }
+
     public function test_filters_by_kind(): void
     {
         $this->loginAs('editor');

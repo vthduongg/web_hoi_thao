@@ -51,6 +51,33 @@ final class MediaUploader
      */
     public function upload(array $file, ?int $userId, ?string $altText = null): MediaFile
     {
+        [$mime, $extension, $kind] = $this->checkTypeAndSize($file);
+
+        $storedPath = 'uploads/' . Clock::now()->format('Y/m') . '/' . bin2hex(random_bytes(16)) . '.' . $extension;
+        $this->storeFile($file['tmp_name'], $storedPath);
+        $image = $kind === 'image' ? $this->imageDetails($storedPath, $mime) : ['width' => null, 'height' => null, 'thumb_small_path' => null, 'thumb_large_path' => null];
+
+        $id = $this->media->create([
+            'original_name' => mb_substr($file['name'], 0, 255),
+            'stored_path' => $storedPath,
+            'mime_type' => $mime,
+            'size_bytes' => (int) filesize($this->absolute($storedPath)),
+            'kind' => $kind,
+            'alt_text' => $altText,
+            'uploaded_by' => $userId,
+        ] + $image);
+
+        return $this->media->find($id);
+    }
+
+    /**
+     * Kiểm tra lỗi tải lên, loại tệp và dung lượng.
+     *
+     * @return array{0: string, 1: string, 2: string} [loại MIME, đuôi tệp lưu, nhóm image|document]
+     * @throws UploadRejected
+     */
+    private function checkTypeAndSize(array $file): array
+    {
         if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK || !is_file($file['tmp_name'])) {
             throw new UploadRejected(t('media.upload_failed', ['name' => $file['name'] ?? '']));
         }
@@ -61,42 +88,33 @@ final class MediaUploader
         }
         [$extension, $kind] = self::ALLOWED[$mime];
 
-        $size = (int) filesize($file['tmp_name']);
         $limit = $kind === 'image' ? self::MAX_IMAGE_BYTES : self::MAX_DOCUMENT_BYTES;
-        if ($size > $limit) {
+        if ((int) filesize($file['tmp_name']) > $limit) {
             throw new UploadRejected(t('media.too_large', ['name' => $file['name'], 'limit' => $limit / self::MB]));
         }
 
-        $relativeDir = 'uploads/' . Clock::now()->format('Y/m');
-        $baseName = bin2hex(random_bytes(16));
-        $storedPath = "$relativeDir/$baseName.$extension";
-        $this->storeFile($file['tmp_name'], $storedPath);
+        return [$mime, $extension, $kind];
+    }
 
-        $width = $height = null;
-        $thumbSmall = $thumbLarge = null;
-        if ($kind === 'image') {
-            [$width, $height] = getimagesize($this->absolute($storedPath)) ?: [null, null];
-            if (!($mime === 'image/gif' && self::isAnimatedGif($this->absolute($storedPath)))) {
-                $thumbSmall = $this->makeThumbnail($storedPath, "$relativeDir/{$baseName}-400.$extension", self::THUMB_SMALL_WIDTH);
-                $thumbLarge = $this->makeThumbnail($storedPath, "$relativeDir/{$baseName}-1200.$extension", self::THUMB_LARGE_WIDTH);
-            }
+    /**
+     * Kích thước ảnh và ảnh thu nhỏ 400/1200 px (GIF động không tạo ảnh thu nhỏ).
+     *
+     * @return array{width: ?int, height: ?int, thumb_small_path: ?string, thumb_large_path: ?string}
+     */
+    private function imageDetails(string $storedPath, string $mime): array
+    {
+        [$width, $height] = getimagesize($this->absolute($storedPath)) ?: [null, null];
+        $details = ['width' => $width, 'height' => $height, 'thumb_small_path' => null, 'thumb_large_path' => null];
+        if ($mime === 'image/gif' && self::isAnimatedGif($this->absolute($storedPath))) {
+            return $details;
         }
 
-        $id = $this->media->create([
-            'original_name' => mb_substr($file['name'], 0, 255),
-            'stored_path' => $storedPath,
-            'mime_type' => $mime,
-            'size_bytes' => $size,
-            'kind' => $kind,
-            'width' => $width,
-            'height' => $height,
-            'thumb_small_path' => $thumbSmall,
-            'thumb_large_path' => $thumbLarge,
-            'alt_text' => $altText,
-            'uploaded_by' => $userId,
-        ]);
+        $base = substr($storedPath, 0, strrpos($storedPath, '.'));
+        $extension = pathinfo($storedPath, PATHINFO_EXTENSION);
+        $details['thumb_small_path'] = $this->makeThumbnail($storedPath, "$base-400.$extension", self::THUMB_SMALL_WIDTH);
+        $details['thumb_large_path'] = $this->makeThumbnail($storedPath, "$base-1200.$extension", self::THUMB_LARGE_WIDTH);
 
-        return $this->media->find($id);
+        return $details;
     }
 
     /** Loại MIME theo nội dung tệp; DOCX đôi khi được nhận là ZIP nên kiểm tra thêm cấu trúc bên trong. */

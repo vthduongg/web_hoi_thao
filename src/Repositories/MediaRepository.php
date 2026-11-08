@@ -47,8 +47,8 @@ final class MediaRepository
         $sql = 'SELECT TOP (' . max(1, $limit) . ') * FROM media_files WHERE deleted_at IS NULL';
         $params = [];
         if ($query !== '') {
-            $sql .= ' AND original_name LIKE ?';
-            $params[] = '%' . addcslashes($query, '%_[') . '%';
+            $sql .= " AND original_name LIKE ? ESCAPE '\\'";
+            $params[] = Database::likeContains($query);
         }
         if ($kind === 'image' || $kind === 'document') {
             $sql .= ' AND kind = ?';

@@ -35,6 +35,8 @@ final class HtmlSanitizer
         $config->set('Attr.EnableID', false);
         $config->set('HTML.TargetNoopener', true);
         $config->set('URI.AllowedSchemes', ['http' => true, 'https' => true, 'mailto' => true, 'tel' => true]);
+        // Bỏ thuộc tính style: CSP trang công khai (style-src 'self') chặn style viết trong thẻ (research.md R18)
+        $config->set('CSS.AllowedProperties', []);
 
         $this->purifier = new HTMLPurifier($config);
     }

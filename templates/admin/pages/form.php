@@ -85,6 +85,9 @@ $field = static fn (string $name): string => isset($errors[$name]) ? ' form-fiel
         <div class="form-field<?= $field('published_at') ?>">
             <label for="published_at"><?= e(t('pages.field_published_at')) ?></label>
             <input type="datetime-local" id="published_at" name="published_at" value="<?= e($values['published_at']) ?>">
+            <?php if (local_input_to_display($values['published_at']) !== ''): ?>
+                <p class="form-field__hint"><?= e(t('pages.published_at_current', ['time' => local_input_to_display($values['published_at'])])) ?></p>
+            <?php endif; ?>
             <p class="form-field__hint"><?= e(t('pages.published_at_hint')) ?></p>
             <?= partial('admin/partials/field-error', ['errors' => $errors, 'field' => 'published_at']) ?>
         </div>

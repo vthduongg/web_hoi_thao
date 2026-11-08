@@ -46,7 +46,12 @@ final class PasswordResetService
         $link = rtrim($this->appUrl, '/') . '/admin/reset-password/' . $token;
         $body = View::current()->render('admin/emails/reset-password', ['user' => $user, 'link' => $link, 'minutes' => self::EXPIRES_MINUTES]);
 
-        $this->mailer->send($user->email, t('auth.reset_email_subject'), $body);
+        // Lỗi gửi thư chỉ ghi log: nếu hiện trang lỗi thì người ngoài biết được email này có tài khoản
+        try {
+            $this->mailer->send($user->email, t('auth.reset_email_subject'), $body);
+        } catch (\Throwable $e) {
+            error_log('Không gửi được thư đặt lại mật khẩu: ' . $e->getMessage());
+        }
     }
 
     public function isValid(string $token): bool

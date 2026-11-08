@@ -78,8 +78,8 @@ final class PageRepository
             $params[] = $tag;
         }
         if ($query !== '') {
-            $sql .= ' AND p.title LIKE ?';
-            $params[] = '%' . addcslashes($query, '%_[') . '%';
+            $sql .= " AND p.title LIKE ? ESCAPE '\\'";
+            $params[] = Database::likeContains($query);
         }
 
         return array_map([Page::class, 'fromRow'], $this->db->query($sql . ' ORDER BY p.title', $params));

@@ -28,6 +28,9 @@ final class Auth
     private const KEY_EPOCH = 'auth_epoch';
     private const KEY_LAST_ACTIVITY = 'auth_last_activity';
 
+    /** Hash bcrypt của một chuỗi ngẫu nhiên, chỉ dùng để cân bằng thời gian khi email không tồn tại. */
+    private const DUMMY_HASH = '$2y$10$RfIuEeGik6D3TOnZQAenauNRaH24SsHKabAt7/HgEuCGEv1zWi3SK';
+
     private readonly UserRepository $users;
     private ?User $current = null;
     private bool $checked = false;
@@ -43,12 +46,11 @@ final class Auth
         $now = Clock::now();
 
         if ($user === null) {
+            // Vẫn kiểm tra mật khẩu với một hash giả để thời gian phản hồi giống khi email có thật
+            password_verify($password, self::DUMMY_HASH);
             $this->logger->log(null, 'login_failed', 'users', null, UserRepository::normalizeEmail($email));
 
             return LoginResult::InvalidCredentials;
-        }
-        if (!$user->isActive) {
-            return LoginResult::Inactive;
         }
         if (LoginThrottle::isLocked($user, $now)) {
             return LoginResult::Locked;
@@ -59,6 +61,10 @@ final class Auth
             $this->logger->log($user->id, 'login_failed', 'users', $user->id, $user->email);
 
             return $changes['locked_until'] !== null ? LoginResult::Locked : LoginResult::InvalidCredentials;
+        }
+        // Chỉ báo "tài khoản bị khoá" khi mật khẩu đúng, để không lộ tài khoản nào đang bị khoá
+        if (!$user->isActive) {
+            return LoginResult::Inactive;
         }
 
         $this->users->update($user->id, LoginThrottle::afterSuccess() + ['last_login_at' => Clock::nowForDatabase()]);

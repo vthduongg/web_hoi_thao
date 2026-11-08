@@ -12,6 +12,9 @@ use App\Services\Mailer;
 /** Tạo App với đầy đủ dịch vụ. Dùng ở public/index.php và trong test. */
 final class AppFactory
 {
+    /** Hàm đăng ký route trả về từ src/routes.php. */
+    private static ?\Closure $registerRoutes = null;
+
     public static function create(string $rootDir, ?Database $db = null, ?SessionStore $sessionStore = null): App
     {
         $environment = Env::get('APP_ENV', 'production');
@@ -33,8 +36,10 @@ final class AppFactory
         );
         $services->auth = new Auth($db, $session, $services->logger);
         $services->mailer = Mailer::fromEnv($environment);
+        // routes.php khai báo hàm nên chỉ được nạp một lần (test tạo nhiều App trong cùng tiến trình)
+        self::$registerRoutes ??= require $rootDir . '/src/routes.php';
         $router = new Router();
-        (require $rootDir . '/src/routes.php')($router);
+        (self::$registerRoutes)($router);
 
         return new App($router, $services);
     }

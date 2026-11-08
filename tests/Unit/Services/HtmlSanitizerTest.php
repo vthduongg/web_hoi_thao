@@ -61,6 +61,14 @@ final class HtmlSanitizerTest extends TestCase
         self::assertStringNotContainsString('evil.example.com', $clean);
     }
 
+    public function test_removes_inline_styles_blocked_by_public_csp(): void
+    {
+        $clean = $this->sanitizer->clean('<table style="border-collapse: collapse; width: 100%;"><tbody><tr><td style="color:red">A</td></tr></tbody></table>');
+
+        self::assertStringNotContainsString('style=', $clean);
+        self::assertStringContainsString('<td>A</td>', $clean);
+    }
+
     public function test_keeps_vietnamese_text(): void
     {
         self::assertSame('<p>Hội thảo khoa học quốc tế</p>', $this->sanitizer->clean('<p>Hội thảo khoa học quốc tế</p>'));

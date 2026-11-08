@@ -41,6 +41,16 @@ final class PasswordTest extends HttpTestCase
         self::assertCount(1, $this->app->services()->mailer->sent);
     }
 
+    public function test_mail_failure_still_shows_same_message_without_error_page(): void
+    {
+        $this->app->services()->mailer = \App\Services\Mailer::fake(failing: true);
+
+        $this->post('/admin/forgot-password', ['email' => 'known@example.com']);
+
+        $this->assertStatus(200);
+        $this->assertSee(self::SAME_MESSAGE);
+    }
+
     public function test_reset_with_valid_token_then_login_with_new_password(): void
     {
         $this->post('/admin/forgot-password', ['email' => 'known@example.com']);

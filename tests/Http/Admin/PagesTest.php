@@ -197,6 +197,43 @@ final class PagesTest extends HttpTestCase
         $this->get('/admin/pages?q=' . rawurlencode('notes'));
         $this->assertSee('Draft Notes');
         $this->assertDontSee('Travel Info');
+
+        // Ký tự % trong từ khoá được hiểu đúng nghĩa đen
+        $this->get('/admin/pages?q=' . rawurlencode('%'));
+        $this->assertDontSee('Draft Notes');
+        $this->assertDontSee('Travel Info');
+    }
+
+    public function test_publish_with_invalid_time_keeps_status_and_shows_error(): void
+    {
+        $this->post('/admin/pages/new', $this->formData());
+        $id = $this->pageId('paper-submission');
+
+        $this->post("/admin/pages/$id/publish", ['published_at' => '31/12/2026']);
+
+        $this->assertRedirect("/admin/pages/$id");
+        self::assertSame('draft', $this->db->value('SELECT status FROM pages WHERE id = ?', [$id]));
+        $this->get("/admin/pages/$id");
+        $this->assertSee('Ngày không hợp lệ.');
+    }
+
+    public function test_restoring_missing_revision_returns_404(): void
+    {
+        $this->post('/admin/pages/new', $this->formData());
+        $id = $this->pageId('paper-submission');
+
+        $this->post("/admin/pages/$id/revisions/999/restore");
+
+        $this->assertStatus(404);
+    }
+
+    public function test_edit_form_shows_publish_time_in_vietnamese_format(): void
+    {
+        $this->post('/admin/pages/new', $this->formData(['status' => 'published', 'published_at' => '2026-03-10T09:00']));
+
+        $this->get('/admin/pages/' . $this->pageId('paper-submission'));
+
+        $this->assertSee('Giá trị đã chọn: 10/03/2026 09:00');
     }
 
     public function test_pages_of_other_conferences_are_not_editable(): void
