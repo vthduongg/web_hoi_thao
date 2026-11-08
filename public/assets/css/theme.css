@@ -1,0 +1,57 @@
+/*
+ * BIẾN GIAO DIỆN — chỗ đầu tiên cần sửa khi muốn đổi màu, font, khoảng cách.
+ *
+ * Mọi file CSS khác chỉ dùng các biến này (var(--ten-bien)), không viết mã màu trực tiếp.
+ * Khi đổi màu chữ/nền, kiểm tra độ tương phản tối thiểu 4.5:1 (xem docs/huong-dan-giao-dien.md).
+ */
+:root {
+  /* ---- Màu thương hiệu ---- */
+  --color-primary: #a31f24;        /* Màu chính (đỏ): thanh menu, nút chính, tiêu đề nhấn. Tương phản với trắng: 7.2:1 */
+  --color-primary-dark: #7d171b;   /* Màu chính khi rê chuột / đang chọn */
+  --color-accent: #1f4e99;         /* Màu phụ (xanh dương): liên kết, viền nhấn. Tương phản với trắng: 7.9:1 */
+  --color-highlight: #f2b705;      /* Màu điểm nhấn (vàng): gạch chân, biểu tượng — KHÔNG dùng làm màu chữ trên nền trắng */
+  --color-highlight-bg: #fff4d6;   /* Nền nhạt để làm nổi bật (mốc thời gian sắp tới) */
+
+  /* ---- Màu chữ và nền ---- */
+  --color-text: #1f2933;           /* Chữ thường. Tương phản với nền trắng: 14.7:1 */
+  --color-text-muted: #52606d;     /* Chữ phụ (chú thích, ngày). Tương phản với nền trắng: 6.4:1 */
+  --color-text-inverse: #ffffff;   /* Chữ trên nền màu chính */
+  --color-bg: #ffffff;             /* Nền trang */
+  --color-bg-alt: #f5f7fa;         /* Nền khối xen kẽ, hàng bảng chẵn */
+  --color-border: #d9e2ec;         /* Viền bảng, viền thẻ */
+
+  /* ---- Màu trạng thái (dùng nhiều ở trang quản trị) ---- */
+  --color-success: #1e6b3a;        /* Thông báo thành công (chữ trên nền nhạt) */
+  --color-success-bg: #e3f4e8;
+  --color-danger: #b42318;         /* Lỗi, nút xoá */
+  --color-danger-bg: #fdecea;
+  --color-warning-bg: #fff4d6;
+
+  /* ---- Font chữ ---- */
+  --font-body: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;   /* Font nội dung (hỗ trợ tiếng Việt) */
+  --font-heading: var(--font-body);                                       /* Font tiêu đề */
+
+  /* ---- Cỡ chữ ---- */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px — cỡ chữ nội dung */
+  --text-lg: 1.25rem;    /* 20px */
+  --text-xl: 1.75rem;    /* 28px */
+  --text-2xl: 2.25rem;   /* 36px — tiêu đề lớn trang chủ */
+  --line-height: 1.6;
+
+  /* ---- Khoảng cách ---- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2.5rem;
+  --space-6: 4rem;
+
+  /* ---- Hình dạng ---- */
+  --radius: 6px;                 /* Bo góc nút, thẻ, ô nhập */
+  --shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+
+  /* ---- Bố cục ---- */
+  --content-max-width: 1200px;   /* Độ rộng tối đa của nội dung */
+  --admin-sidebar-width: 240px;  /* Độ rộng thanh bên trang quản trị */
+}

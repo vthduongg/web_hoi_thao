@@ -1,0 +1,54 @@
+{
+    "name": "hpu2/conference-website",
+    "description": "Website hội thảo khoa học quốc tế kèm trang quản trị nội dung",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.3",
+        "ext-pdo_sqlsrv": "*",
+        "ext-gd": "*",
+        "ext-mbstring": "*",
+        "ext-fileinfo": "*",
+        "ext-zip": "*",
+        "ext-xmlreader": "*",
+        "ezyang/htmlpurifier": "^4.18",
+        "phpmailer/phpmailer": "^6.9",
+        "openspout/openspout": "^4.28"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.5",
+        "friendsofphp/php-cs-fixer": "^3.64"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        },
+        "files": [
+            "src/Core/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test:php": "phpunit",
+        "test:e2e": "npx playwright test",
+        "test": [
+            "@test:php",
+            "@test:e2e"
+        ],
+        "format": "php-cs-fixer fix"
+    },
+    "scripts-descriptions": {
+        "test": "Chạy toàn bộ test: PHPUnit rồi Playwright",
+        "test:php": "Chỉ chạy test PHP (nhanh)",
+        "test:e2e": "Chỉ chạy test trình duyệt Playwright",
+        "format": "Định dạng code theo PSR-12"
+    },
+    "config": {
+        "sort-packages": true,
+        "process-timeout": 1800
+    }
+}

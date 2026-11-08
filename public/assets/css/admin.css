@@ -1,0 +1,73 @@
+/*
+ * GIAO DIỆN TRANG QUẢN TRỊ
+ * Dùng được trên máy tính và máy tính bảng. Màu, font lấy từ theme.css.
+ */
+
+/* ===== 1. Nền tảng ===== */
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; font-family: var(--font-body); font-size: var(--text-base); line-height: var(--line-height); color: var(--color-text); background: var(--color-bg-alt); }
+a { color: var(--color-accent); }
+:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; }
+h1 { font-size: var(--text-xl); margin: 0 0 var(--space-4); }
+h2 { font-size: var(--text-lg); }
+img { max-width: 100%; height: auto; }
+
+/* ===== 2. Khung: thanh bên + nội dung ===== */
+.admin-shell { display: grid; grid-template-columns: var(--admin-sidebar-width) 1fr; min-height: 100vh; }
+.admin-sidebar { background: var(--color-primary); color: var(--color-text-inverse); padding: var(--space-3); }
+.admin-sidebar__title { font-weight: 700; margin: 0 0 var(--space-4); }
+.admin-sidebar ul { list-style: none; margin: 0; padding: 0; }
+.admin-sidebar a { display: block; padding: var(--space-2) var(--space-3); border-radius: var(--radius); color: var(--color-text-inverse); text-decoration: none; }
+.admin-sidebar a:hover, .admin-sidebar a[aria-current="page"] { background: var(--color-primary-dark); }
+.admin-main { padding: var(--space-4); min-width: 0; }
+.admin-topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-4); }
+.admin-card { background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius); padding: var(--space-4); margin-bottom: var(--space-4); }
+
+@media (max-width: 899px) {
+  .admin-shell { grid-template-columns: 1fr; }
+  .admin-sidebar ul { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+}
+
+/* ===== 3. Thông báo flash ===== */
+.flash { padding: var(--space-3); border-radius: var(--radius); margin-bottom: var(--space-3); }
+.flash--success { background: var(--color-success-bg); color: var(--color-success); }
+.flash--error { background: var(--color-danger-bg); color: var(--color-danger); }
+
+/* ===== 4. Biểu mẫu ===== */
+.form-field { margin-bottom: var(--space-3); }
+.form-field label { display: block; font-weight: 600; margin-bottom: var(--space-1); }
+.form-field input[type="text"], .form-field input[type="email"], .form-field input[type="password"],
+.form-field input[type="url"], .form-field input[type="date"], .form-field input[type="datetime-local"],
+.form-field input[type="time"], .form-field input[type="number"], .form-field select, .form-field textarea {
+  width: 100%; max-width: 640px; padding: var(--space-2); font: inherit;
+  border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-bg);
+}
+.form-field textarea { max-width: 100%; min-height: 120px; }
+.form-field__hint { font-size: var(--text-sm); color: var(--color-text-muted); }
+.form-field__error { color: var(--color-danger); font-size: var(--text-sm); margin-top: var(--space-1); }
+.form-field--invalid input, .form-field--invalid select, .form-field--invalid textarea { border-color: var(--color-danger); }
+
+/* ===== 5. Nút ===== */
+.button { display: inline-block; padding: var(--space-2) var(--space-3); border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-bg); color: var(--color-text); font: inherit; text-decoration: none; cursor: pointer; }
+.button:hover { background: var(--color-bg-alt); }
+.button--primary { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-text-inverse); }
+.button--primary:hover { background: var(--color-primary-dark); }
+.button--danger { color: var(--color-danger); border-color: var(--color-danger); }
+.button--small { padding: var(--space-1) var(--space-2); font-size: var(--text-sm); }
+.inline-form { display: inline; }
+
+/* ===== 6. Bảng danh sách ===== */
+.table-scroll { overflow-x: auto; }
+.admin-table { width: 100%; border-collapse: collapse; background: var(--color-bg); }
+.admin-table th, .admin-table td { padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--color-border); text-align: left; vertical-align: middle; }
+.admin-table th { background: var(--color-bg-alt); }
+.admin-table__actions { white-space: nowrap; }
+.badge { display: inline-block; padding: 0 var(--space-2); border-radius: var(--radius); font-size: var(--text-sm); background: var(--color-bg-alt); border: 1px solid var(--color-border); }
+
+/* ===== 7. Sắp xếp kéo thả (sortable-list.js) ===== */
+[data-sortable-item] { cursor: grab; }
+[data-sortable-item].is-dragging { opacity: 0.5; }
+.sortable-controls { white-space: nowrap; }
+
+/* ===== 8. Trang lỗi, đăng nhập ===== */
+.centered-page { max-width: 480px; margin: var(--space-6) auto; padding: 0 var(--space-3); }

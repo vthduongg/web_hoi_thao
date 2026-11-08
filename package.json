@@ -1,0 +1,11 @@
+{
+  "name": "conference-website-e2e",
+  "private": true,
+  "description": "Chỉ dùng để chạy test trình duyệt (Playwright). Máy chủ chạy website không cần Node.js.",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.0"
+  }
+}
