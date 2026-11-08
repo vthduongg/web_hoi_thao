@@ -34,6 +34,7 @@ function current_locale(): string
  *   'admin'      → 16/03/2026 00:30 (trang quản trị, có giờ)
  *   'admin_date' → 16/03/2026 (trang quản trị, chỉ ngày)
  *   'time'       → 08:30
+ *   'input'      → 2026-03-16T00:30 (giá trị cho ô <input type="datetime-local">, giờ Việt Nam)
  *
  * Chuỗi dạng Y-m-d (chỉ ngày) được giữ nguyên ngày, không đổi múi giờ.
  * Giá trị có giờ được hiểu là UTC và đổi sang giờ Việt Nam.
@@ -49,6 +50,7 @@ function format_date(DateTimeInterface|string|null $value, string $style = 'publ
         'admin' => 'd/m/Y H:i',
         'admin_date' => 'd/m/Y',
         'time' => 'H:i',
+        'input' => 'Y-m-d\TH:i',
         default => throw new InvalidArgumentException("Kiểu định dạng ngày không tồn tại: $style"),
     };
 

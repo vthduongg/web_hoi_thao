@@ -42,6 +42,12 @@ final class Page
         );
     }
 
+    /** Đã đặt xuất bản nhưng chưa tới giờ (hẹn giờ). */
+    public function isScheduled(): bool
+    {
+        return $this->status === 'published' && $this->publishedAt !== null && $this->publishedAt > \App\Core\Clock::nowForDatabase();
+    }
+
     /** Mô tả cho thẻ meta: mô tả SEO, hoặc 160 ký tự đầu của nội dung. */
     public function metaDescription(): string
     {

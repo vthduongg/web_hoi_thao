@@ -70,5 +70,25 @@ img { max-width: 100%; height: auto; }
 [data-sortable-item].is-dragging { opacity: 0.5; }
 .sortable-controls { white-space: nowrap; }
 
-/* ===== 8. Trang lỗi, đăng nhập ===== */
+/* ===== 8. Bảng điều khiển, bộ lọc, nhãn trạng thái ===== */
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-3); }
+.stat__label { margin: 0; color: var(--color-text-muted); }
+.stat__value { margin: var(--space-1) 0 0; font-size: var(--text-xl); }
+.filter-bar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-3); }
+.filter-bar .form-field { margin-bottom: 0; }
+.page-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.badge--published { background: var(--color-success-bg); color: var(--color-success); }
+.badge--hidden { background: var(--color-danger-bg); color: var(--color-danger); }
+.form-field__label { display: block; font-weight: 600; margin-bottom: var(--space-1); }
+.media-field__preview img { display: block; margin-bottom: var(--space-2); border: 1px solid var(--color-border); border-radius: var(--radius); }
+
+/* ===== 9. Hộp chọn tệp ===== */
+.picker-page { padding: var(--space-4); }
+.media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: var(--space-3); list-style: none; margin: var(--space-4) 0 0; padding: 0; }
+.media-grid__item { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-2); background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius); }
+.media-grid__item img { width: 100%; height: 120px; object-fit: cover; }
+.media-grid__icon { font-size: 3rem; text-align: center; }
+.media-grid__name { font-size: var(--text-sm); word-break: break-all; }
+
+/* ===== 10. Trang lỗi, đăng nhập ===== */
 .centered-page { max-width: 480px; margin: var(--space-6) auto; padding: 0 var(--space-3); }

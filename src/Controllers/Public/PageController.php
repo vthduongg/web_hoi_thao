@@ -39,6 +39,17 @@ final class PageController extends Controller
             $this->notFound();
         }
 
+        return $this->renderPageModel($conference, $page, $currentPath);
+    }
+
+    /**
+     * Render một trang (kể cả bản nháp — dùng cho Xem trước trong quản trị).
+     *
+     * @param string $bannerHtml dải thông báo phía trên trang (xem trước, lưu trữ); đã thoát HTML
+     */
+    public function renderPageModel(Conference $conference, Page $page, string $currentPath, string $bannerHtml = ''): Response
+    {
+        $pages = new PageRepository($this->services->db);
         $context = new PublicPageContext($this->services, $conference);
         $context->shareWithView($currentPath);
         $pageUrl = PublicPageContext::absoluteUrl(url('/' . $page->slug));
@@ -53,6 +64,7 @@ final class PageController extends Controller
             'relatedPages' => $this->relatedPages($page, $context, $pages),
             'moduleTemplate' => $this->moduleTemplate($page),
             'moduleData' => $this->moduleData($page, $conference),
+            'bannerHtml' => $bannerHtml,
         ]);
 
         return Response::html($html);

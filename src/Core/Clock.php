@@ -41,6 +41,16 @@ final class Clock
         return self::now()->setTimezone(new DateTimeZone(self::VIETNAM_TIMEZONE))->format('Y-m-d');
     }
 
+    /**
+     * Đổi giờ Việt Nam người dùng nhập (ô datetime-local, dạng 2026-03-10T08:30) sang UTC để lưu CSDL.
+     */
+    public static function vietnamLocalToUtc(string $localDateTime): string
+    {
+        return (new DateTimeImmutable($localDateTime, new DateTimeZone(self::VIETNAM_TIMEZONE)))
+            ->setTimezone(new DateTimeZone('UTC'))
+            ->format('Y-m-d H:i:s');
+    }
+
     /** Thời điểm hiện tại dạng chuỗi để ghi vào cột DATETIME2. */
     public static function nowForDatabase(): string
     {

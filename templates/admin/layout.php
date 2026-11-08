@@ -10,7 +10,7 @@
  * @var list<array{type: string, message: string}> $flashMessages
  * @var string $csrfToken
  * @var string $currentPath
- * @var list<string> $extraScripts  file JS riêng của trang (trong assets/js)
+ * @var list<string> $extraScripts  file JS riêng của trang, đường dẫn tính từ assets/ (ví dụ js/editor.js)
  */
 $isAdmin = ($currentUser['role'] ?? '') === 'admin';
 $menu = [
@@ -42,7 +42,7 @@ $menu = [
     <link rel="stylesheet" href="<?= e(asset('css/admin.css')) ?>">
     <script src="<?= e(asset('js/confirm-delete.js')) ?>" defer></script>
     <?php foreach ($extraScripts ?? [] as $script): ?>
-        <script src="<?= e(asset('js/' . $script)) ?>" defer></script>
+        <script src="<?= e(asset($script)) ?>" defer></script>
     <?php endforeach; ?>
 </head>
 <body>

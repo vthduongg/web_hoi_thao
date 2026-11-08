@@ -39,6 +39,11 @@ final class HelpersTest extends TestCase
         self::assertSame('16/03/2026 00:30', format_date('2026-03-15 17:30:00', 'admin'));
     }
 
+    public function test_input_format_is_vietnam_time_for_datetime_local_fields(): void
+    {
+        self::assertSame('2026-03-10T08:30', format_date('2026-03-10 01:30:00', 'input'));
+    }
+
     public function test_empty_value_formats_to_empty_string(): void
     {
         self::assertSame('', format_date(null, 'public'));

@@ -106,7 +106,53 @@ final class Seeder
         $this->seedMenu($conferenceId, $pageIds);
         if ($isTest) {
             $this->seedSlides($conferenceId);
+            $this->seedTestOnlyContent($conferenceId);
         }
+    }
+
+    // ----- Dữ liệu chỉ dùng cho test trình duyệt (US2) -----
+
+    private function seedTestOnlyContent(int $conferenceId): void
+    {
+        if ((int) $this->db->value("SELECT COUNT(*) FROM pages WHERE conference_id = ? AND slug = 'e2e-delete-me'", [$conferenceId]) === 0) {
+            $this->db->insert('pages', [
+                'conference_id' => $conferenceId,
+                'title' => 'E2E Delete Me',
+                'slug' => 'e2e-delete-me',
+                'body_html' => '<p>This page is deleted by an automated test.</p>',
+                'status' => 'published',
+                'published_at' => '2026-01-01 00:00:00',
+            ]);
+        }
+        $this->copyFixtureToLibrary('no-alt.jpg', 'no-alt.jpg', 'image/jpeg', 'image', null);
+        $this->copyFixtureToLibrary('sample.pdf', 'Guidelines.pdf', 'application/pdf', 'document', null);
+    }
+
+    /** Chép tệp mẫu trong tests/fixtures vào public/uploads/seed và thêm vào thư viện (nếu chưa có). */
+    private function copyFixtureToLibrary(string $fixture, string $originalName, string $mime, string $kind, ?string $alt): int
+    {
+        $storedPath = 'uploads/seed/' . $fixture;
+        $existing = $this->db->value('SELECT id FROM media_files WHERE stored_path = ?', [$storedPath]);
+        if ($existing !== null) {
+            return (int) $existing;
+        }
+        $target = $this->rootDir . '/public/' . $storedPath;
+        if (!is_dir(dirname($target))) {
+            mkdir(dirname($target), 0775, true);
+        }
+        copy($this->rootDir . '/tests/fixtures/' . $fixture, $target);
+        [$width, $height] = $kind === 'image' ? (getimagesize($target) ?: [null, null]) : [null, null];
+
+        return $this->db->insert('media_files', [
+            'original_name' => $originalName,
+            'stored_path' => $storedPath,
+            'mime_type' => $mime,
+            'size_bytes' => filesize($target),
+            'kind' => $kind,
+            'width' => $width,
+            'height' => $height,
+            'alt_text' => $alt,
+        ]);
     }
 
     /** Có dữ liệu của hội thảo trong bảng chưa (để chạy lại không tạo trùng). */

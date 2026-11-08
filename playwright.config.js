@@ -24,8 +24,8 @@ module.exports = defineConfig({
     url: `http://127.0.0.1:${port}/`,
     env: { APP_ENV: 'testing', APP_USE_TEST_DB: '1' },
     reuseExistingServer: false,
-    stdout: 'ignore', // log từng request của php -S không cần hiện
-    stderr: 'pipe',
+    stdout: 'ignore', // php -S ghi log từng request ra stderr — không cần hiện
+    stderr: 'ignore',
     timeout: 120000,
   },
 });

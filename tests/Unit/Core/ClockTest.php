@@ -38,6 +38,12 @@ final class ClockTest extends TestCase
         self::assertGreaterThan(2025, (int) Clock::now()->format('Y'));
     }
 
+    public function test_converts_vietnam_local_time_to_utc_for_database(): void
+    {
+        self::assertSame('2026-03-10 01:30:00', Clock::vietnamLocalToUtc('2026-03-10T08:30'));
+        self::assertSame('2026-03-09 17:00:00', Clock::vietnamLocalToUtc('2026-03-10T00:00'));
+    }
+
     public function test_today_in_vietnam(): void
     {
         Clock::freeze('2026-03-10 16:59:00'); // 23:59 giờ VN

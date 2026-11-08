@@ -23,6 +23,24 @@ return static function (Router $r): void {
     $r->get('/admin/profile/password', 'Admin\\ProfileController@showPassword', 'E');
     $r->post('/admin/profile/password', 'Admin\\ProfileController@updatePassword', 'E');
 
+    // Trang nội dung
+    $r->get('/admin/pages', 'Admin\\PageController@index', 'E');
+    $r->get('/admin/pages/new', 'Admin\\PageController@create', 'E');
+    $r->post('/admin/pages/new', 'Admin\\PageController@store', 'E');
+    $r->get('/admin/pages/{id}', 'Admin\\PageController@edit', 'E');
+    $r->post('/admin/pages/{id}', 'Admin\\PageController@update', 'E');
+    $r->get('/admin/pages/{id}/preview', 'Admin\\PageController@preview', 'E');
+    $r->post('/admin/pages/{id}/publish', 'Admin\\PageController@publish', 'E');
+    $r->post('/admin/pages/{id}/hide', 'Admin\\PageController@hide', 'E');
+    $r->post('/admin/pages/{id}/draft', 'Admin\\PageController@draft', 'E');
+    $r->get('/admin/pages/{id}/revisions', 'Admin\\PageController@revisions', 'E');
+    $r->post('/admin/pages/{id}/revisions/{revisionNo}/restore', 'Admin\\PageController@restore', 'E');
+    $r->post('/admin/pages/{id}/delete', 'Admin\\PageController@delete', 'E');
+
+    // Thư viện tệp
+    $r->get('/admin/media/picker', 'Admin\\MediaController@picker', 'E');
+    $r->post('/admin/media/upload', 'Admin\\MediaController@upload', 'E');
+
     // ----- Quản trị: chỉ quản trị viên (A) -----
     $r->get('/admin/users', 'Admin\\UserController@index', 'A');
     $r->get('/admin/users/new', 'Admin\\UserController@create', 'A');
