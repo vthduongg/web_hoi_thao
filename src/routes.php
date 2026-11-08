@@ -80,6 +80,12 @@ function registerStructuredDataRoutes(Router $r): void
     registerCrudRoutes($r, '/admin/sponsor-tiers', 'Admin\\SponsorTierController');
     registerCrudRoutes($r, '/admin/sponsors', 'Admin\\SponsorController');
     registerCrudRoutes($r, '/admin/contacts', 'Admin\\ContactController');
+
+    // Trang chủ: đoạn giới thiệu, slider, khối nổi bật (US6)
+    $r->get('/admin/home', 'Admin\\HomeController@index', 'E');
+    $r->post('/admin/home/intro', 'Admin\\HomeController@saveIntro', 'E');
+    registerCrudRoutes($r, '/admin/home/slides', 'Admin\\SlideController');
+    registerCrudRoutes($r, '/admin/home/highlights', 'Admin\\HighlightController');
 }
 
 /** Chức năng chỉ dành cho quản trị viên. */
@@ -92,6 +98,11 @@ function registerAdminOnlyRoutes(Router $r): void
     $r->post('/admin/users/{id}', 'Admin\\UserController@update', 'A');
     $r->post('/admin/users/{id}/lock', 'Admin\\UserController@lock', 'A');
     $r->post('/admin/users/{id}/unlock', 'Admin\\UserController@unlock', 'A');
+
+    // Thông tin chung và menu (US6)
+    $r->get('/admin/settings', 'Admin\\SettingsController@edit', 'A');
+    $r->post('/admin/settings', 'Admin\\SettingsController@update', 'A');
+    registerCrudRoutes($r, '/admin/menu', 'Admin\\MenuController', 'A');
 }
 
 /** Trang công khai — đăng ký CUỐI CÙNG vì /{slug} khớp mọi đường dẫn một cấp. */

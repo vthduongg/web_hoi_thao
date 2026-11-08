@@ -294,17 +294,17 @@ Một project web render phía server tại gốc repo: `public/`, `src/`, `temp
 
 ### Tests for User Story 6 ⚠️
 
-- [ ] T140 [P] [US6] HTTP test thông tin chung: chỉ admin; `name`, `year` bắt buộc; `contact_email` sai → 422; `submission_url` không bắt đầu `http://`/`https://` → 422; đổi ngày tổ chức sửa mốc `conference_day`; logo/favicon cập nhật trên header công khai; email mới hiện ở footer, trong `tests/Http/Admin/SettingsTest.php`
-- [ ] T141 [P] [US6] HTTP test menu: chỉ admin; lưu cây thứ tự mới; mục cấp 3 → 422 ("tối đa 2 cấp"); mục có cả `page_id` và `external_url` → 422; link ngoài công khai có `target="_blank" rel="noopener"`, trong `tests/Http/Admin/MenuTest.php`
-- [ ] T142 [P] [US6] HTTP test trang chủ: editor sửa đoạn giới thiệu (lọc HTML), thêm slide thiếu `alt_text` → 422, tắt slide → không hiện, sắp xếp slide và khối nổi bật, trong `tests/Http/Admin/HomeSettingsTest.php`
-- [ ] T143 [P] [US6] Playwright test `tests/e2e/menu-editor.spec.js` cho cây menu (`sortable-list.js` chế độ lồng cấp, `data-max-depth="2"`): kéo "Program" lên đầu và kéo một mục thành mục con → lưu → menu công khai đúng thứ tự và cấp; thử đưa mục xuống cấp 3 → bị chặn kèm thông báo "Menu tối đa 2 cấp"; chỉ dùng bàn phím với nút ▲/▼/→/← làm được cùng thao tác
+- [X] T140 [P] [US6] HTTP test thông tin chung: chỉ admin; `name`, `year` bắt buộc; `contact_email` sai → 422; `submission_url` không bắt đầu `http://`/`https://` → 422; đổi ngày tổ chức sửa mốc `conference_day`; logo/favicon cập nhật trên header công khai; email mới hiện ở footer, trong `tests/Http/Admin/SettingsTest.php`
+- [X] T141 [P] [US6] HTTP test menu: chỉ admin; lưu cây thứ tự mới; mục cấp 3 → 422 ("tối đa 2 cấp"); mục có cả `page_id` và `external_url` → 422; link ngoài công khai có `target="_blank" rel="noopener"`, trong `tests/Http/Admin/MenuTest.php`
+- [X] T142 [P] [US6] HTTP test trang chủ: editor sửa đoạn giới thiệu (lọc HTML), thêm slide thiếu `alt_text` → 422, tắt slide → không hiện, sắp xếp slide và khối nổi bật, trong `tests/Http/Admin/HomeSettingsTest.php`
+- [X] T143 [P] [US6] Playwright test `tests/e2e/menu-editor.spec.js` cho cây menu (`sortable-list.js` chế độ lồng cấp, `data-max-depth="2"`): kéo "Program" lên đầu và kéo một mục thành mục con → lưu → menu công khai đúng thứ tự và cấp; thử đưa mục xuống cấp 3 → bị chặn kèm thông báo "Menu tối đa 2 cấp"; chỉ dùng bàn phím với nút ▲/▼/→/← làm được cùng thao tác
 
 ### Implementation for User Story 6
 
-- [ ] T144 [US6] Viết `src/Controllers/Admin/SettingsController.php` + `templates/admin/settings/form.php` (mọi trường FR-022, ngày tổ chức đọc/ghi mốc `conference_day`, chọn logo/favicon bằng media picker)
-- [ ] T145 [US6] Bổ sung phần ghi của `src/Repositories/MenuRepository.php` (`saveTree()` trong transaction, kiểm tra tối đa 2 cấp) và viết `src/Controllers/Admin/MenuController.php` + `templates/admin/menu/index.php` (cây kéo thả dùng `sortable-list.js` hỗ trợ lồng cấp + nút ▲/▼/→/←; chọn trang trong site hoặc nhập link ngoài)
-- [ ] T146 [US6] Viết `src/Controllers/Admin/HomeController.php` + `templates/admin/home/index.php`, `slide-form.php`, `highlight-form.php`; bổ sung phần ghi `src/Repositories/HomeRepository.php`
-- [ ] T147 [US6] Thêm route `/admin/settings`, `/admin/menu`, `/admin/home/*` vào `src/routes.php`
+- [X] T144 [US6] Viết `src/Controllers/Admin/SettingsController.php` + `templates/admin/settings/form.php` (mọi trường FR-022, ngày tổ chức đọc/ghi mốc `conference_day`, chọn logo/favicon bằng media picker)
+- [X] T145 [US6] Bổ sung phần ghi của `src/Repositories/MenuRepository.php` (`saveTree()` trong transaction, kiểm tra tối đa 2 cấp) và viết `src/Controllers/Admin/MenuController.php` + `templates/admin/menu/index.php` (cây kéo thả dùng `sortable-list.js` hỗ trợ lồng cấp + nút ▲/▼/→/←; chọn trang trong site hoặc nhập link ngoài)
+- [X] T146 [US6] Viết `src/Controllers/Admin/HomeController.php` + `templates/admin/home/index.php`, `slide-form.php`, `highlight-form.php`; bổ sung phần ghi `src/Repositories/HomeRepository.php`
+- [X] T147 [US6] Thêm route `/admin/settings`, `/admin/menu`, `/admin/home/*` vào `src/routes.php`
 
 **Checkpoint**: Ban tổ chức thay đổi khung website không cần lập trình viên.
 

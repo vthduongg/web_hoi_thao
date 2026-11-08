@@ -90,6 +90,10 @@ img { max-width: 100%; height: auto; }
 .crud-list__cell { color: var(--color-text-muted); font-size: var(--text-sm); }
 .crud-list__actions { display: flex; flex-wrap: wrap; gap: var(--space-1); }
 .checkbox { display: block; margin: var(--space-1) 0; }
+/* Cây menu: mục con thụt vào; danh sách con chiếm hết chiều ngang của mục cha */
+.menu-tree__children { list-style: none; flex-basis: 100%; margin: 0; padding: 0 0 0 var(--space-5); }
+.menu-tree__children:empty { display: none; }
+.menu-tree__children .crud-list__item { background: var(--color-bg-alt); }
 .program-day h3 { font-size: var(--text-base); margin-top: var(--space-3); }
 
 /* ===== 9. Hộp chọn tệp ===== */
