@@ -41,8 +41,17 @@ function registerContentRoutes(Router $r): void
     $r->post('/admin/pages/{id}/revisions/{revisionNo}/restore', 'Admin\\PageController@restore', 'E');
     $r->post('/admin/pages/{id}/delete', 'Admin\\PageController@delete', 'E');
 
+    $r->get('/admin/media', 'Admin\\MediaController@index', 'E');
     $r->get('/admin/media/picker', 'Admin\\MediaController@picker', 'E');
     $r->post('/admin/media/upload', 'Admin\\MediaController@upload', 'E');
+    $r->get('/admin/media/{id}', 'Admin\\MediaController@edit', 'E');
+    $r->post('/admin/media/{id}', 'Admin\\MediaController@update', 'E');
+    $r->post('/admin/media/{id}/delete', 'Admin\\MediaController@delete', 'E');
+
+    // Thùng rác: khôi phục (mọi người), xoá vĩnh viễn (chỉ quản trị viên)
+    $r->get('/admin/trash', 'Admin\\TrashController@index', 'E');
+    $r->post('/admin/trash/{type}/{id}/restore', 'Admin\\TrashController@restore', 'E');
+    $r->post('/admin/trash/{type}/{id}/purge', 'Admin\\TrashController@purge', 'A');
 }
 
 /**
@@ -98,6 +107,9 @@ function registerAdminOnlyRoutes(Router $r): void
     $r->post('/admin/users/{id}', 'Admin\\UserController@update', 'A');
     $r->post('/admin/users/{id}/lock', 'Admin\\UserController@lock', 'A');
     $r->post('/admin/users/{id}/unlock', 'Admin\\UserController@unlock', 'A');
+
+    // Nhật ký: chỉ đọc, không có route sửa/xoá
+    $r->get('/admin/activity', 'Admin\\ActivityController@index', 'A');
 
     // Thông tin chung và menu (US6)
     $r->get('/admin/settings', 'Admin\\SettingsController@edit', 'A');

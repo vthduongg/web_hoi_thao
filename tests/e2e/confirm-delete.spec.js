@@ -1,6 +1,5 @@
 // Test trình duyệt cho confirm-delete.js — US2.
 // Dữ liệu seed --test có trang "E2E Delete Me" chỉ dùng cho test này.
-// (Kiểm tra trang nằm trong Thùng rác được bổ sung ở US7, khi có màn hình Thùng rác.)
 const { test, expect } = require('@playwright/test');
 const { loginAs } = require('./helpers');
 
@@ -25,4 +24,10 @@ test('nút Xoá hỏi xác nhận: Huỷ thì giữ, Đồng ý thì xoá', asyn
 
   const response = await page.goto('/e2e-delete-me');
   expect(response.status()).toBe(404);
+
+  // Trang vừa xoá nằm trong Thùng rác và có nút Khôi phục
+  await page.goto('/admin/trash');
+  const trashRow = page.locator('tr', { hasText: 'E2E Delete Me' });
+  await expect(trashRow).toBeVisible();
+  await expect(trashRow.getByRole('button', { name: 'Khôi phục' })).toBeVisible();
 });

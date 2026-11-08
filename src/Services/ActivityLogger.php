@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Core\Clock;
 use App\Core\Database;
 
 /**
@@ -42,6 +43,7 @@ final class ActivityLogger
             'entity_label' => $label === null ? null : mb_substr($label, 0, 255),
             'conference_id' => $conferenceId,
             'ip_address' => $this->ipAddress !== '' ? $this->ipAddress : null,
+            'created_at' => Clock::nowForDatabase(),
         ]);
     }
 }

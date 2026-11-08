@@ -318,23 +318,23 @@ Một project web render phía server tại gốc repo: `public/`, `src/`, `temp
 
 ### Tests for User Story 7 ⚠️
 
-- [ ] T148 [P] [US7] Integration test `MediaUsageFinder`: tìm qua mọi cột FK tới `media_files` (logo, favicon, program file, slide, ảnh thành viên, ảnh diễn giả, logo nhà tài trợ, ảnh đại diện trang) và chuỗi `stored_path` trong `pages.body_html`, `keynote_speakers.bio_html`, `conferences.home_intro_html`, trong `tests/Integration/MediaUsageFinderTest.php`
-- [ ] T149 [P] [US7] Integration test `TrashService`: liệt kê mục đã xoá ở mọi bảng xoá mềm kèm ngày tự xoá (`deleted_at` + 30 ngày); khôi phục đặt `deleted_at = NULL` giữ thứ tự; khôi phục trang có slug đã bị dùng → yêu cầu slug khác; `purgeExpired()` xoá vĩnh viễn mục quá 30 ngày (và tệp trên đĩa với media), trong `tests/Integration/TrashServiceTest.php`
-- [ ] T150 [P] [US7] HTTP test thư viện tệp: tìm theo tên, lọc loại; tải sai loại/quá dung lượng → lỗi nêu rõ giới hạn và loại cho phép; xoá tệp đang dùng → trang xác nhận liệt kê nơi dùng, xác nhận lần hai → thùng rác, trong `tests/Http/Admin/MediaTest.php`
-- [ ] T151 [P] [US7] HTTP test thùng rác + nhật ký: editor thấy "Khôi phục" nhưng không có "Xoá vĩnh viễn" và POST purge → 403; admin purge được; `/admin/activity` chỉ admin, lọc theo người/hành động/khoảng ngày, không có route sửa/xoá nhật ký; bổ sung vào `tests/e2e/confirm-delete.spec.js` bước mở Thùng rác thấy trang vừa xoá (phần còn thiếu từ US2), trong `tests/Http/Admin/TrashActivityTest.php`
-- [ ] T152 [P] [US7] Integration test `BackupService` (lệnh `BACKUP DATABASE` được sinh đúng tên tệp có ngày; nén `uploads/` thành `.zip`; giữ 30 bản mới nhất, xoá bản cũ hơn) trong `tests/Integration/BackupServiceTest.php`
-- [ ] T153 [P] [US7] Integration test CLI `bin/daily.php` trong `tests/Integration/Cli/DailyTest.php` (với `APP_ENV=testing`, `BackupService` chạy chế độ thử ghi lệnh thay vì thực thi): xoá vĩnh viễn mục thùng rác quá 30 ngày, giữ mục 29 ngày; gọi sao lưu; ghi `activity_logs`; exit code 0; sao lưu lỗi → vẫn dọn thùng rác, in lỗi, exit code ≠ 0
+- [X] T148 [P] [US7] Integration test `MediaUsageFinder`: tìm qua mọi cột FK tới `media_files` (logo, favicon, program file, slide, ảnh thành viên, ảnh diễn giả, logo nhà tài trợ, ảnh đại diện trang) và chuỗi `stored_path` trong `pages.body_html`, `keynote_speakers.bio_html`, `conferences.home_intro_html`, trong `tests/Integration/MediaUsageFinderTest.php`
+- [X] T149 [P] [US7] Integration test `TrashService`: liệt kê mục đã xoá ở mọi bảng xoá mềm kèm ngày tự xoá (`deleted_at` + 30 ngày); khôi phục đặt `deleted_at = NULL` giữ thứ tự; khôi phục trang có slug đã bị dùng → yêu cầu slug khác; `purgeExpired()` xoá vĩnh viễn mục quá 30 ngày (và tệp trên đĩa với media), trong `tests/Integration/TrashServiceTest.php`
+- [X] T150 [P] [US7] HTTP test thư viện tệp: tìm theo tên, lọc loại; tải sai loại/quá dung lượng → lỗi nêu rõ giới hạn và loại cho phép; xoá tệp đang dùng → trang xác nhận liệt kê nơi dùng, xác nhận lần hai → thùng rác, trong `tests/Http/Admin/MediaTest.php`
+- [X] T151 [P] [US7] HTTP test thùng rác + nhật ký: editor thấy "Khôi phục" nhưng không có "Xoá vĩnh viễn" và POST purge → 403; admin purge được; `/admin/activity` chỉ admin, lọc theo người/hành động/khoảng ngày, không có route sửa/xoá nhật ký; bổ sung vào `tests/e2e/confirm-delete.spec.js` bước mở Thùng rác thấy trang vừa xoá (phần còn thiếu từ US2), trong `tests/Http/Admin/TrashActivityTest.php`
+- [X] T152 [P] [US7] Integration test `BackupService` (lệnh `BACKUP DATABASE` được sinh đúng tên tệp có ngày; nén `uploads/` thành `.zip`; giữ 30 bản mới nhất, xoá bản cũ hơn) trong `tests/Integration/BackupServiceTest.php`
+- [X] T153 [P] [US7] Integration test CLI `bin/daily.php` trong `tests/Integration/Cli/DailyTest.php` (với `APP_ENV=testing`, `BackupService` chạy chế độ thử ghi lệnh thay vì thực thi): xoá vĩnh viễn mục thùng rác quá 30 ngày, giữ mục 29 ngày; gọi sao lưu; ghi `activity_logs`; exit code 0; sao lưu lỗi → vẫn dọn thùng rác, in lỗi, exit code ≠ 0
 
 ### Implementation for User Story 7
 
-- [ ] T154 [P] [US7] Viết `src/Services/MediaUsageFinder.php`
-- [ ] T155 [P] [US7] Viết `src/Services/TrashService.php` (danh sách bảng xoá mềm khai báo một chỗ, kèm nhãn hiển thị tiếng Việt)
-- [ ] T156 [P] [US7] Viết `src/Services/BackupService.php` (`BACKUP DATABASE … TO DISK = '{BACKUP_DIR}\conference-YYYYMMDD.bak'` — `BACKUP_DIR` là đường dẫn nhìn từ máy SQL Server; `ZipArchive` cho `uploads/`; dọn bản cũ giữ 30; chế độ thử cho test; thông báo lỗi rõ khi thiếu quyền `db_backupoperator` hoặc không ghi được thư mục)
-- [ ] T157 [US7] Hoàn thiện `src/Controllers/Admin/MediaController.php` (index, upload nhiều tệp, sửa mô tả ảnh, delete có xác nhận nơi dùng) + `templates/admin/media/index.php`, `confirm-delete.php`
-- [ ] T158 [US7] Viết `src/Controllers/Admin/TrashController.php` + `templates/admin/trash/index.php`, `restore-slug.php`
-- [ ] T159 [US7] Viết `src/Controllers/Admin/ActivityController.php` + `templates/admin/activity/index.php` (bảng phân trang `OFFSET … FETCH NEXT 50`, thời gian `dd/mm/yyyy HH:mm`)
-- [ ] T160 [US7] Viết `bin/daily.php` (gọi `TrashService::purgeExpired()` rồi `BackupService::run()`, ghi kết quả ra stdout và `activity_logs`) và `docs/van-hanh.md`: tạo lịch Windows Task Scheduler lúc 02:00; cấp vai trò `db_backupoperator`; cấu hình `BACKUP_DIR` khi SQL Server cùng máy (đường dẫn cục bộ) và khác máy (thư mục chia sẻ UNC mà tài khoản dịch vụ SQL Server ghi được và máy web đọc được); cách khôi phục `.bak` và `.zip`
-- [ ] T161 [US7] Thêm route media, trash, activity vào `src/routes.php`
+- [X] T154 [P] [US7] Viết `src/Services/MediaUsageFinder.php`
+- [X] T155 [P] [US7] Viết `src/Services/TrashService.php` (danh sách bảng xoá mềm khai báo một chỗ, kèm nhãn hiển thị tiếng Việt)
+- [X] T156 [P] [US7] Viết `src/Services/BackupService.php` (`BACKUP DATABASE … TO DISK = '{BACKUP_DIR}\conference-YYYYMMDD.bak'` — `BACKUP_DIR` là đường dẫn nhìn từ máy SQL Server; `ZipArchive` cho `uploads/`; dọn bản cũ giữ 30; chế độ thử cho test; thông báo lỗi rõ khi thiếu quyền `db_backupoperator` hoặc không ghi được thư mục)
+- [X] T157 [US7] Hoàn thiện `src/Controllers/Admin/MediaController.php` (index, upload nhiều tệp, sửa mô tả ảnh, delete có xác nhận nơi dùng) + `templates/admin/media/index.php`, `confirm-delete.php`
+- [X] T158 [US7] Viết `src/Controllers/Admin/TrashController.php` + `templates/admin/trash/index.php`, `restore-slug.php`
+- [X] T159 [US7] Viết `src/Controllers/Admin/ActivityController.php` + `templates/admin/activity/index.php` (bảng phân trang `OFFSET … FETCH NEXT 50`, thời gian `dd/mm/yyyy HH:mm`)
+- [X] T160 [US7] Viết `bin/daily.php` (gọi `TrashService::purgeExpired()` rồi `BackupService::run()`, ghi kết quả ra stdout và `activity_logs`) và `docs/van-hanh.md`: tạo lịch Windows Task Scheduler lúc 02:00; cấp vai trò `db_backupoperator`; cấu hình `BACKUP_DIR` khi SQL Server cùng máy (đường dẫn cục bộ) và khác máy (thư mục chia sẻ UNC mà tài khoản dịch vụ SQL Server ghi được và máy web đọc được); cách khôi phục `.bak` và `.zip`
+- [X] T161 [US7] Thêm route media, trash, activity vào `src/routes.php`
 
 **Checkpoint**: Xoá nhầm khôi phục được, truy vết được thay đổi, dữ liệu được sao lưu.
 

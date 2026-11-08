@@ -4,14 +4,78 @@ declare(strict_types=1);
 
 namespace App\Controllers\Admin;
 
+use App\Core\Clock;
 use App\Core\Response;
+use App\Models\MediaFile;
 use App\Repositories\MediaRepository;
 use App\Services\MediaUploader;
+use App\Services\MediaUsageFinder;
 use App\Services\UploadRejected;
 
-/** Thư viện tệp: hộp chọn tệp (dùng trong trình soạn thảo và các ô ảnh) và tải lên. */
+/** Thư viện tệp (FR-036): danh sách, tải lên, sửa mô tả ảnh, xoá có cảnh báo nơi dùng, hộp chọn tệp. */
 final class MediaController extends AdminController
 {
+    public function index(): Response
+    {
+        $query = $this->request->input('q');
+        $kind = $this->request->input('kind');
+
+        return $this->render('admin/media/index', [
+            'pageTitle' => t('media.title'),
+            'items' => (new MediaRepository($this->services->db))->search($query, $kind === '' ? null : $kind),
+            'query' => $query,
+            'kind' => $kind,
+        ]);
+    }
+
+    public function edit(string $id): Response
+    {
+        return $this->editForm($this->findMedia($id), []);
+    }
+
+    /** Sửa mô tả ảnh (dùng làm alt mặc định khi chèn ảnh). */
+    public function update(string $id): Response
+    {
+        $media = $this->findMedia($id);
+        $altText = $this->request->input('alt_text');
+        $errors = $this->validate(['alt_text' => $altText], ['alt_text' => 'max:500']);
+        if ($errors !== []) {
+            return $this->editForm($media, $errors, 422);
+        }
+
+        $this->services->db->update('media_files', ['alt_text' => $altText === '' ? null : $altText], 'id = ?', [$media->id]);
+        $this->log('update', 'media_files', $media->id, $media->originalName);
+        $this->services->flash->success(t('common.saved'));
+
+        return $this->redirect('/admin/media');
+    }
+
+    /** Tệp đang được dùng: hiện danh sách nơi dùng và hỏi xác nhận lần hai; sau đó chuyển vào thùng rác. */
+    public function delete(string $id): Response
+    {
+        $media = $this->findMedia($id);
+        $usages = (new MediaUsageFinder($this->services->db))->find($media->id);
+        if ($usages !== [] && $this->request->input('confirmed') !== '1') {
+            return $this->render('admin/media/confirm-delete', ['pageTitle' => t('common.delete'), 'media' => $media, 'usages' => $usages]);
+        }
+
+        $this->services->db->update('media_files', ['deleted_at' => Clock::nowForDatabase(), 'deleted_by' => $this->currentUser()->id], 'id = ?', [$media->id]);
+        $this->log('delete', 'media_files', $media->id, $media->originalName);
+        $this->services->flash->success(t('common.deleted'));
+
+        return $this->redirect('/admin/media');
+    }
+
+    private function findMedia(string $id): MediaFile
+    {
+        return (new MediaRepository($this->services->db))->find((int) $id) ?? $this->notFound();
+    }
+
+    private function editForm(MediaFile $media, array $errors, int $status = 200): Response
+    {
+        return $this->render('admin/media/form', ['pageTitle' => t('media.edit'), 'media' => $media, 'errors' => $errors], $status);
+    }
+
     /** Hộp chọn tệp — mở trong cửa sổ riêng, chọn xong gửi kết quả về cửa sổ gọi (media-picker.js). */
     public function picker(): Response
     {
@@ -46,6 +110,10 @@ final class MediaController extends AdminController
             $this->services->flash->success(t('media.uploaded', ['count' => $uploaded]));
         }
 
+        // Tải lên từ màn hình Thư viện tệp thì quay về thư viện; từ hộp chọn tệp thì quay về hộp chọn
+        if ($this->request->input('return') === 'library') {
+            return $this->redirect('/admin/media');
+        }
         $kind = $this->request->input('kind');
 
         return $this->redirect('/admin/media/picker' . ($kind !== '' ? '?kind=' . rawurlencode($kind) : ''));
