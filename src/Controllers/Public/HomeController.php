@@ -21,8 +21,12 @@ final class HomeController extends Controller
         return $this->renderHome($conference, '/');
     }
 
-    /** Dùng chung cho trang chủ hiện hành và trang chủ hội thảo lưu trữ (US8). */
-    public function renderHome(Conference $conference, string $currentPath): Response
+    /**
+     * Dùng chung cho trang chủ hiện hành và trang chủ hội thảo lưu trữ (US8).
+     *
+     * @param string $bannerHtml dải thông báo phía trên (ví dụ "This is an archived conference"); đã thoát HTML
+     */
+    public function renderHome(Conference $conference, string $currentPath, string $bannerHtml = ''): Response
     {
         $context = new PublicPageContext($this->services, $conference);
         $context->shareWithView($currentPath);
@@ -44,6 +48,7 @@ final class HomeController extends Controller
             'highlights' => $home->visibleHighlights($conference->id),
             'callForPapersUrl' => $context->linkToPage('call-for-papers'),
             'paperSubmissionUrl' => $context->linkToPage('paper-submission'),
+            'bannerHtml' => $bannerHtml,
         ]);
 
         return Response::html($html);

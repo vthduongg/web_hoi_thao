@@ -348,17 +348,17 @@ Một project web render phía server tại gốc repo: `public/`, `src/`, `temp
 
 ### Tests for User Story 8 ⚠️
 
-- [ ] T162 [P] [US8] Integration test `ConferenceCopier` theo bảng sao chép trong data-model.md: chép thông tin chung (năm mới, `is_current = 0`, `has_been_current = 0`), pages + tags (status `draft`, không chép revisions/slug_redirects), menu (ánh xạ lại `page_id`, `parent_id`), slides, highlights, important_dates, committees + members + page_committees, sponsor_tiers + sponsors, contact_persons; KHÔNG chép keynote_speakers, program, `program_file_media_id`; media dùng chung; bỏ qua bản ghi đã xoá mềm; năm trùng → lỗi; lỗi giữa chừng → rollback toàn bộ, trong `tests/Integration/ConferenceCopierTest.php`
-- [ ] T163 [P] [US8] HTTP test lưu trữ: `/{year}` và `/{year}/{slug}` của hội thảo đã từng hiện hành → 200 + dải "This is an archived conference" kèm link về `/`; năm hiện hành → 301 về `/`; năm chưa từng hiện hành → 404; `/past-conferences` liệt kê `has_been_current = 1 AND is_current = 0`, mới nhất trước; footer có link "Past Conferences", trong `tests/Http/Public/ArchiveTest.php`
-- [ ] T164 [P] [US8] HTTP test quản trị hội thảo: chỉ admin sao chép và đặt hiện hành; editor chuyển được hội thảo đang sửa qua `/admin/switch-conference` (POST, trường `conference_id`); dữ liệu quản trị luôn thuộc hội thảo đang chọn, trong `tests/Http/Admin/ConferencesTest.php`
+- [X] T162 [P] [US8] Integration test `ConferenceCopier` theo bảng sao chép trong data-model.md: chép thông tin chung (năm mới, `is_current = 0`, `has_been_current = 0`), pages + tags (status `draft`, không chép revisions/slug_redirects), menu (ánh xạ lại `page_id`, `parent_id`), slides, highlights, important_dates, committees + members + page_committees, sponsor_tiers + sponsors, contact_persons; KHÔNG chép keynote_speakers, program, `program_file_media_id`; media dùng chung; bỏ qua bản ghi đã xoá mềm; năm trùng → lỗi; lỗi giữa chừng → rollback toàn bộ, trong `tests/Integration/ConferenceCopierTest.php`
+- [X] T163 [P] [US8] HTTP test lưu trữ: `/{year}` và `/{year}/{slug}` của hội thảo đã từng hiện hành → 200 + dải "This is an archived conference" kèm link về `/`; năm hiện hành → 301 về `/`; năm chưa từng hiện hành → 404; `/past-conferences` liệt kê `has_been_current = 1 AND is_current = 0`, mới nhất trước; footer có link "Past Conferences", trong `tests/Http/Public/ArchiveTest.php`
+- [X] T164 [P] [US8] HTTP test quản trị hội thảo: chỉ admin sao chép và đặt hiện hành; editor chuyển được hội thảo đang sửa qua `/admin/switch-conference` (POST, trường `conference_id`); dữ liệu quản trị luôn thuộc hội thảo đang chọn, trong `tests/Http/Admin/ConferencesTest.php`
 
 ### Implementation for User Story 8
 
-- [ ] T165 [US8] Viết `src/Services/ConferenceCopier.php` (một transaction, bảng ánh xạ id cũ → id mới cho pages, menu, committees, sponsor_tiers; ghi nhật ký `copy_conference`)
-- [ ] T166 [US8] Bổ sung `ConferenceRepository::makeCurrent()` (transaction: bỏ `is_current` cũ, đặt mới, `has_been_current = 1`) và `archived()`
-- [ ] T167 [US8] Viết `src/Controllers/Admin/ConferenceController.php` (danh sách, sao chép với ô nhập năm mới, đặt hiện hành có xác nhận, chuyển hội thảo đang sửa) + `templates/admin/conferences/index.php`, `copy.php`; thêm bộ chọn hội thảo vào thanh trên `templates/admin/layout.php`
-- [ ] T168 [US8] Viết `src/Controllers/Public/ArchiveController.php` (`/{year}`, `/{year}/{slug}`, `/past-conferences`) dùng lại `HomeController`/`PageController` với hội thảo theo năm; `templates/public/past-conferences.php`, `templates/public/partials/archive-banner.php`; mọi link nội bộ trong trang lưu trữ giữ tiền tố `/{year}/`
-- [ ] T169 [US8] Thêm route lưu trữ (đặt trước `/{slug}`) và route `/admin/conferences/*`, `/admin/switch-conference` (POST, trường `conference_id`) vào `src/routes.php`
+- [X] T165 [US8] Viết `src/Services/ConferenceCopier.php` (một transaction, bảng ánh xạ id cũ → id mới cho pages, menu, committees, sponsor_tiers; ghi nhật ký `copy_conference`)
+- [X] T166 [US8] Bổ sung `ConferenceRepository::makeCurrent()` (transaction: bỏ `is_current` cũ, đặt mới, `has_been_current = 1`) và `archived()`
+- [X] T167 [US8] Viết `src/Controllers/Admin/ConferenceController.php` (danh sách, sao chép với ô nhập năm mới, đặt hiện hành có xác nhận, chuyển hội thảo đang sửa) + `templates/admin/conferences/index.php` (ô "Sao chép sang năm" nằm ngay trong danh sách, không cần trang `copy.php` riêng); thêm bộ chọn hội thảo vào thanh trên `templates/admin/layout.php`
+- [X] T168 [US8] Viết `src/Controllers/Public/ArchiveController.php` (`/{year}`, `/{year}/{slug}`, `/past-conferences`) dùng lại `HomeController`/`PageController` với hội thảo theo năm; `templates/public/past-conferences.php`, `templates/public/partials/archive-banner.php`; mọi link nội bộ trong trang lưu trữ giữ tiền tố `/{year}/`
+- [X] T169 [US8] Thêm route lưu trữ (đặt trước `/{slug}`) và route `/admin/conferences/*`, `/admin/switch-conference` (POST, trường `conference_id`) vào `src/routes.php`
 
 **Checkpoint**: Dựng website năm mới từ bản sao trong một ngày; các năm cũ vẫn xem được.
 

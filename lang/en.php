@@ -66,6 +66,12 @@ return [
     'program.download' => 'Download the conference program',
     'program.image_alt' => 'Conference program',
 
+    // Hội thảo các năm trước
+    'archive.title' => 'Past Conferences',
+    'archive.banner' => 'This is an archived conference.',
+    'archive.go_current' => 'Go to the current conference',
+    'archive.empty' => 'There are no past conferences yet.',
+
     // Slider
     'slider.label' => 'Featured images',
     'slider.pause' => 'Pause slideshow',

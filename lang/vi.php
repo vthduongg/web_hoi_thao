@@ -424,6 +424,21 @@ return [
     'trash.type_contact_persons' => 'Người liên hệ',
     'trash.type_media_files' => 'Tệp',
 
+    // Các kỳ hội thảo
+    'conferences.help' => 'Mỗi năm một hội thảo. "Sao chép" tạo hội thảo năm mới từ cấu trúc hiện có (trang về bản nháp, không chép diễn giả và chương trình). "Đặt làm hiện hành" để website hiển thị hội thảo đó; hội thảo cũ được lưu trữ tại /năm.',
+    'conferences.current' => 'Đang hiện hành',
+    'conferences.archived' => 'Đã lưu trữ',
+    'conferences.not_published' => 'Chưa công bố',
+    'conferences.make_current' => 'Đặt làm hiện hành',
+    'conferences.confirm_make_current' => 'Đặt ":name" làm hội thảo hiện hành? Trang chủ website sẽ hiển thị hội thảo này ngay.',
+    'conferences.made_current' => 'Đã đặt ":name" làm hội thảo hiện hành.',
+    'conferences.made_current_log' => 'Đặt làm hiện hành: :name',
+    'conferences.view_archive' => 'Xem bản lưu trữ',
+    'conferences.copy_to_year' => 'Sao chép sang năm',
+    'conferences.copy' => 'Sao chép',
+    'conferences.copied' => 'Đã tạo hội thảo năm :year. Bạn đang sửa hội thảo mới.',
+    'conferences.year_invalid' => 'Năm phải gồm 4 chữ số.',
+
     // Nhật ký
     'activity.from' => 'Từ ngày',
     'activity.to' => 'Đến ngày',

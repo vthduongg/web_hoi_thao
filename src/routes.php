@@ -27,6 +27,7 @@ function registerAuthRoutes(Router $r): void
 function registerContentRoutes(Router $r): void
 {
     $r->get('/admin', 'Admin\\DashboardController@index', 'E');
+    $r->post('/admin/switch-conference', 'Admin\\ConferenceController@switch', 'E');
 
     $r->get('/admin/pages', 'Admin\\PageController@index', 'E');
     $r->get('/admin/pages/new', 'Admin\\PageController@create', 'E');
@@ -108,6 +109,11 @@ function registerAdminOnlyRoutes(Router $r): void
     $r->post('/admin/users/{id}/lock', 'Admin\\UserController@lock', 'A');
     $r->post('/admin/users/{id}/unlock', 'Admin\\UserController@unlock', 'A');
 
+    // Các kỳ hội thảo: sao chép sang năm mới, đặt hiện hành (US8)
+    $r->get('/admin/conferences', 'Admin\\ConferenceController@index', 'A');
+    $r->post('/admin/conferences/{id}/copy', 'Admin\\ConferenceController@copy', 'A');
+    $r->post('/admin/conferences/{id}/make-current', 'Admin\\ConferenceController@makeCurrent', 'A');
+
     // Nhật ký: chỉ đọc, không có route sửa/xoá
     $r->get('/admin/activity', 'Admin\\ActivityController@index', 'A');
 
@@ -121,6 +127,9 @@ function registerAdminOnlyRoutes(Router $r): void
 function registerPublicRoutes(Router $r): void
 {
     $r->get('/', 'Public\\HomeController@index');
+    $r->get('/past-conferences', 'Public\\ArchiveController@index');
+    $r->get('/{year}', 'Public\\ArchiveController@home');
+    $r->get('/{year}/{slug}', 'Public\\ArchiveController@page');
     $r->get('/{slug}', 'Public\\PageController@show');
 }
 

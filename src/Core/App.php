@@ -37,6 +37,7 @@ final class App
         try {
             $this->services->logger->setIpAddress($request->ip);
             $this->services->auth?->beginRequest();
+            $this->services->view->setUrlPrefix(''); // trang lưu trữ (/2025/...) tự đặt lại tiền tố của mình
             $this->chooseLanguage($request);
             $match = $this->router->match($request->method, $request->path);
 

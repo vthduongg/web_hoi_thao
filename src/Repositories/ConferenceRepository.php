@@ -45,6 +45,24 @@ final class ConferenceRepository
         );
     }
 
+    /** Đặt một hội thảo làm hiện hành (bỏ cờ của hội thảo cũ); đánh dấu đã từng hiện hành để được lưu trữ công khai. */
+    public function makeCurrent(int $id): void
+    {
+        $this->db->transaction(function () use ($id): void {
+            $this->db->execute('UPDATE conferences SET is_current = 0, updated_at = SYSUTCDATETIME() WHERE is_current = 1 AND id <> ?', [$id]);
+            $this->db->update('conferences', ['is_current' => 1, 'has_been_current' => 1], 'id = ?', [$id]);
+        });
+    }
+
+    /** @return list<Conference> hội thảo đã từng hiện hành (trừ hội thảo đang hiện hành), mới nhất trước */
+    public function archived(): array
+    {
+        return array_map(
+            [Conference::class, 'fromRow'],
+            $this->db->query('SELECT * FROM conferences WHERE has_been_current = 1 AND is_current = 0 ORDER BY year DESC'),
+        );
+    }
+
     /** @param array<string, mixed> $data cột => giá trị */
     public function update(int $id, array $data): void
     {

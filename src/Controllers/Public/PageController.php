@@ -25,7 +25,7 @@ final class PageController extends Controller
     }
 
     /** Dùng chung cho hội thảo hiện hành và hội thảo lưu trữ (US8). */
-    public function renderPage(Conference $conference, string $slug, string $currentPath): Response
+    public function renderPage(Conference $conference, string $slug, string $currentPath, string $bannerHtml = ''): Response
     {
         $pages = new PageRepository($this->services->db);
         $page = $pages->findPublicBySlug($conference->id, $slug);
@@ -38,7 +38,7 @@ final class PageController extends Controller
             $this->notFound();
         }
 
-        return $this->renderPageModel($conference, $page, $currentPath);
+        return $this->renderPageModel($conference, $page, $currentPath, $bannerHtml);
     }
 
     /**
