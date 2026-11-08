@@ -18,6 +18,27 @@ final class DatabaseTest extends DatabaseTestCase
         self::assertSame('Hội thảo quốc tế về giảng dạy tiếng Anh', $row['name'], 'NVARCHAR phải giữ nguyên tiếng Việt có dấu');
     }
 
+    /**
+     * Lỗi đã gặp: PDO::exec() của pdo_sqlsrv huỷ batch còn thông báo chưa đọc (BACKUP DATABASE không chạy,
+     * không báo lỗi). exec() phải chạy trọn batch.
+     */
+    public function test_exec_runs_whole_batch_even_after_many_info_messages(): void
+    {
+        $id = $this->createConference(['venue' => 'Trước']);
+
+        $this->db->exec("DECLARE @i int = 0; WHILE @i < 50 BEGIN RAISERROR('progress', 0, 1) WITH NOWAIT; SET @i += 1; END;
+            UPDATE conferences SET venue = N'Sau' WHERE id = $id;");
+
+        self::assertSame('Sau', $this->db->value('SELECT venue FROM conferences WHERE id = ?', [$id]));
+    }
+
+    public function test_exec_reports_sql_errors(): void
+    {
+        $this->expectException(\PDOException::class);
+
+        $this->db->exec('SELECT * FROM bang_khong_ton_tai');
+    }
+
     public function test_query_value_and_execute(): void
     {
         $id = $this->createConference();

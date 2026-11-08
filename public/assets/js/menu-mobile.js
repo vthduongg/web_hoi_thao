@@ -4,10 +4,10 @@
 // - Nút [data-submenu-toggle] mở/đóng menu con; Tab bằng bàn phím vào nút cũng mở menu con.
 // - Phím Esc đóng menu con đang mở và đưa focus về nút cha.
 // Khi tắt JavaScript, CSS vẫn mở menu con bằng :hover / :focus-within (xem public.css).
+// Class "js" trên <html> do js-enabled.js đặt sẵn trong <head>.
 (function () {
   'use strict';
 
-  document.documentElement.classList.add('js');
 
   var menuToggle = document.querySelector('[data-menu-toggle]');
   var menu = document.querySelector('[data-main-menu]');

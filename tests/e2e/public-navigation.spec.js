@@ -22,6 +22,20 @@ test.describe('Menu trên điện thoại', () => {
     await expect(menu).toBeHidden();
   });
 
+  test('menu đã thu gọn ngay lần vẽ đầu, nội dung không nhảy (js-enabled.js)', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('load');
+    const shift = await page.evaluate(() => new Promise((resolve) => {
+      let total = 0;
+      new PerformanceObserver((list) => {
+        list.getEntries().forEach((entry) => { if (!entry.hadRecentInput) total += entry.value; });
+      }).observe({ type: 'layout-shift', buffered: true });
+      setTimeout(() => resolve(total), 500);
+    }));
+    expect(await page.evaluate(() => document.documentElement.classList.contains('js'))).toBe(true);
+    expect(shift).toBeLessThan(0.1);
+  });
+
   test('không bị cuộn ngang ở chiều rộng 360px', async ({ page }) => {
     for (const path of ['/', '/important-dates', '/call-for-papers']) {
       await page.goto(path);

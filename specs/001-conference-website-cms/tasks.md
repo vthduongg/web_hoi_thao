@@ -376,7 +376,7 @@ Một project web render phía server tại gốc repo: `public/`, `src/`, `temp
 - [X] T175 [P] Viết `docs/huong-dan-quan-tri.md` (hướng dẫn ngắn < 15 phút cho ban tổ chức: sửa trang, xuất bản, mốc thời gian, nhập thành viên ban, sao chép năm mới) và `README.md` (cài đặt theo quickstart.md)
 - [X] T176 Rà soát bảo mật đối chiếu research.md R6, R15, R18: CSP công khai và `/admin` đúng chính sách (trình soạn thảo, slider, bản đồ, video vẫn chạy, console không có lỗi CSP — kiểm bằng cách chạy lại toàn bộ test Playwright); cookie `Secure` trên production; `public/uploads/` không thực thi script và gửi `nosniff` (kiểm tra `web.config`); không có tệp SVG nào nhận được qua mọi đường tải lên; ghi kết quả vào `docs/van-hanh.md`
 - [X] T177 Chạy `composer format` và `composer test` (PHPUnit + Playwright) — toàn bộ pass
-- [ ] T178 Chạy toàn bộ kịch bản kiểm tra tay và kiểm tra chất lượng (Lighthouse Accessibility ≥ 90, nội dung chính < 3 giây trên 4G giả lập, khôi phục bản sao lưu) trong `specs/001-conference-website-cms/quickstart.md`, ghi kết quả vào `specs/001-conference-website-cms/checklists/quickstart-results.md`
+- [X] T178 Chạy toàn bộ kịch bản kiểm tra tay và kiểm tra chất lượng (Lighthouse Accessibility ≥ 90, nội dung chính < 3 giây trên 4G giả lập, khôi phục bản sao lưu) trong `specs/001-conference-website-cms/quickstart.md`, ghi kết quả vào `specs/001-conference-website-cms/checklists/quickstart-results.md`
 
 ---
 

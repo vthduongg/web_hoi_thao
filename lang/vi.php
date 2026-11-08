@@ -451,6 +451,7 @@ return [
     'backup.bad_database_name' => 'Tên CSDL không hợp lệ.',
     'backup.database_failed' => 'Không sao lưu được CSDL (:error). Kiểm tra tài khoản CSDL có vai trò db_backupoperator và tài khoản dịch vụ SQL Server ghi được thư mục sao lưu.',
     'backup.zip_failed' => 'Không tạo được tệp nén :file.',
+    'backup.file_missing' => 'Lệnh sao lưu CSDL đã chạy nhưng không thấy tệp :file. Nếu SQL Server ở máy khác, BACKUP_DIR phải là thư mục chia sẻ (UNC) mà cả hai máy cùng thấy.',
 
     // Thư viện tệp
     'media.title' => 'Thư viện tệp',

@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Chạy thật bin/daily.php trên CSDL test (tiến trình riêng, dữ liệu được ghi hẳn; test tự dọn khi xong).
- * Sao lưu chạy ở chế độ thử (--dry-run-backup): không chạy lệnh BACKUP DATABASE thật.
+ * Hầu hết test sao lưu ở chế độ thử (--dry-run-backup); riêng test_real_backup_* chạy BACKUP DATABASE thật.
  */
 final class DailyTest extends TestCase
 {
@@ -44,13 +44,13 @@ final class DailyTest extends TestCase
     }
 
     /** @return array{0: int, 1: string} */
-    private function runDaily(string $backupDir): array
+    private function runDaily(string $backupDir, bool $dryRunBackup = true): array
     {
         // Tiến trình con kế thừa biến môi trường; biến này được ưu tiên hơn giá trị trong .env
         $previous = getenv('BACKUP_DIR');
         putenv('BACKUP_DIR=' . $backupDir);
         try {
-            $command = escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg(dirname(__DIR__, 3) . '/bin/daily.php') . ' --test --dry-run-backup';
+            $command = escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg(dirname(__DIR__, 3) . '/bin/daily.php') . ' --test' . ($dryRunBackup ? ' --dry-run-backup' : '');
             exec($command . ' 2>&1', $output, $exitCode);
         } finally {
             putenv($previous === false ? 'BACKUP_DIR' : 'BACKUP_DIR=' . $previous);
@@ -73,6 +73,37 @@ final class DailyTest extends TestCase
         self::assertSame(1, (int) $this->db->value("SELECT COUNT(*) FROM activity_logs WHERE action = 'purge' AND entity_id = ?", [$expired]));
         self::assertGreaterThanOrEqual(1, (int) $this->db->value("SELECT COUNT(*) FROM activity_logs WHERE action = 'backup' AND created_at > DATEADD(MINUTE, -5, SYSUTCDATETIME())"));
         self::assertStringContainsString('Đã xoá vĩnh viễn', $output);
+    }
+
+    /**
+     * Sao lưu THẬT CSDL test vào thư mục con của BACKUP_DIR (thư mục mà tài khoản dịch vụ SQL Server ghi được,
+     * xem docs/van-hanh.md). Test này bắt được lỗi "báo thành công nhưng không có tệp .bak".
+     */
+    public function test_real_backup_writes_bak_file_and_records_it_in_sql_server(): void
+    {
+        $base = \App\Core\Env::get('BACKUP_DIR', '');
+        if ($base === '' || !is_dir($base) || !is_writable($base)) {
+            self::markTestSkipped('Cần BACKUP_DIR trong .env trỏ tới thư mục có sẵn mà SQL Server ghi được (docs/van-hanh.md).');
+        }
+        $dir = $base . DIRECTORY_SEPARATOR . 'phpunit-' . bin2hex(random_bytes(4));
+        mkdir($dir);
+
+        try {
+            [$exitCode, $output] = $this->runDaily($dir, dryRunBackup: false);
+
+            self::assertSame(0, $exitCode, $output);
+            $bak = glob($dir . '/conference-*.bak') ?: [];
+            self::assertCount(1, $bak, $output);
+            self::assertGreaterThan(0, filesize($bak[0]));
+            self::assertSame(1, (int) $this->db->value(
+                'SELECT COUNT(*) FROM msdb.dbo.backupset b JOIN msdb.dbo.backupmediafamily m ON m.media_set_id = b.media_set_id
+                 WHERE m.physical_device_name = ? AND b.backup_finish_date IS NOT NULL',
+                [realpath($bak[0])],
+            ));
+        } finally {
+            array_map('unlink', glob($dir . '/*') ?: []);
+            @rmdir($dir);
+        }
     }
 
     public function test_backup_failure_still_purges_and_exits_with_error(): void

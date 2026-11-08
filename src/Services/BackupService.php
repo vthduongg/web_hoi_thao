@@ -71,6 +71,12 @@ final class BackupService
         } catch (\Throwable $e) {
             throw new BackupFailed(t('backup.database_failed', ['error' => $e->getMessage()]), 0, $e);
         }
+        // Không tin vào việc "không có lỗi": tệp phải thật sự xuất hiện
+        // (khi SQL Server ở máy khác, BACKUP_DIR phải là thư mục chia sẻ mà máy web cũng thấy được)
+        clearstatcache();
+        if (!is_file($file) || filesize($file) === 0) {
+            throw new BackupFailed(t('backup.file_missing', ['file' => $file]));
+        }
     }
 
     private function zipUploads(string $zipFile): void

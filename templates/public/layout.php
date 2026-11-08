@@ -34,6 +34,7 @@ $fullTitle = ($pageTitle ?? '') !== '' ? $pageTitle . ' | ' . $conferenceName : 
     <?php endif; ?>
     <link rel="stylesheet" href="<?= e(asset('css/theme.css')) ?>">
     <link rel="stylesheet" href="<?= e(asset('css/public.css')) ?>">
+    <script src="<?= e(asset('js/js-enabled.js')) ?>"></script><!-- đồng bộ, có chủ ý: tránh menu nhảy khi tải trang -->
     <script src="<?= e(asset('js/menu-mobile.js')) ?>" defer></script>
     <script src="<?= e(asset('js/slider.js')) ?>" defer></script>
     <script src="<?= e(asset('js/copy-link.js')) ?>" defer></script>

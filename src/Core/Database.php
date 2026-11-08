@@ -182,7 +182,11 @@ final class Database
     public function exec(string $sql): void
     {
         try {
-            $this->pdo->exec($sql);
+            // Đọc hết mọi kết quả/thông báo của batch. Với pdo_sqlsrv, PDO::exec() trả về sớm và câu lệnh bị HUỶ
+            // khi còn thông báo chưa đọc (ví dụ BACKUP DATABASE in "Processed N pages…"), mà không báo lỗi.
+            $statement = $this->pdo->query($sql);
+            while ($statement->nextRowset()) {
+            }
         } catch (PDOException $e) {
             throw new PDOException($e->getMessage() . "\nSQL: " . mb_substr($sql, 0, 300), (int) $e->getCode(), $e);
         }
