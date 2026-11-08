@@ -101,6 +101,18 @@ final class Database
     }
 
     /**
+     * Thêm một dòng vào bảng không có cột id (ví dụ page_tags, page_committees).
+     *
+     * @param array<string, mixed> $data
+     */
+    public function insertRow(string $table, array $data): void
+    {
+        $columns = implode(', ', array_keys($data));
+        $placeholders = implode(', ', array_fill(0, count($data), '?'));
+        $this->execute("INSERT INTO $table ($columns) VALUES ($placeholders)", array_values($data));
+    }
+
+    /**
      * Cập nhật các dòng thoả điều kiện, tự đặt updated_at. Trả về số dòng bị ảnh hưởng.
      *
      * @param array<string, mixed> $data

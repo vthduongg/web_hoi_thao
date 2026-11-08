@@ -19,5 +19,6 @@
     </testsuites>
     <php>
         <env name="APP_ENV" value="testing" force="true"/>
+        <env name="APP_URL" value="http://localhost:8000" force="true"/>
     </php>
 </phpunit>

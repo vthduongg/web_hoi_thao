@@ -19,4 +19,38 @@ return [
     'common.past_conferences' => 'Past Conferences',
     'common.phone' => 'Phone',
     'common.email' => 'Email',
+
+    // Trang chủ
+    'home.key_information' => 'Key information',
+    'home.date' => 'Date',
+    'home.venue' => 'Venue',
+    'home.language' => 'Language',
+    'home.abstract_deadline' => 'Abstract submission deadline',
+    'home.full_paper_deadline' => 'Full paper submission deadline',
+    'home.call_for_papers' => 'Call for Papers',
+    'home.paper_submission' => 'Paper Submission',
+    'home.highlights' => 'Highlights',
+
+    // Mốc thời gian
+    'dates.milestone' => 'Milestone',
+    'dates.date' => 'Date',
+    'dates.tba' => 'To be announced',
+    'dates.extended' => 'Extended',
+    'dates.upcoming' => 'Upcoming',
+
+    // Nút nộp bài
+    'submit.button' => 'Submit your paper',
+    'submit.soon' => 'Submission opening soon',
+
+    // Chia sẻ, trang liên quan
+    'share.title' => 'Share this page',
+    'share.copy' => 'Copy link',
+    'share.copied' => 'Link copied',
+    'share.copy_failed' => 'Could not copy the link',
+    'related.title' => 'Related pages',
+
+    // Slider
+    'slider.label' => 'Featured images',
+    'slider.pause' => 'Pause slideshow',
+    'slider.play' => 'Play slideshow',
 ];

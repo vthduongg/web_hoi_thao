@@ -9,4 +9,7 @@ declare(strict_types=1);
 use App\Core\Router;
 
 return static function (Router $r): void {
+    // ----- Trang công khai (route chung /{slug} luôn để cuối) -----
+    $r->get('/', 'Public\\HomeController@index');
+    $r->get('/{slug}', 'Public\\PageController@show');
 };
