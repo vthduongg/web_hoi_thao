@@ -36,6 +36,7 @@ final class App
     {
         try {
             $this->services->logger->setIpAddress($request->ip);
+            $this->services->auth?->beginRequest();
             $this->chooseLanguage($request);
             $match = $this->router->match($request->method, $request->path);
 

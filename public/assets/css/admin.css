@@ -11,6 +11,7 @@ a { color: var(--color-accent); }
 h1 { font-size: var(--text-xl); margin: 0 0 var(--space-4); }
 h2 { font-size: var(--text-lg); }
 img { max-width: 100%; height: auto; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* ===== 2. Khung: thanh bên + nội dung ===== */
 .admin-shell { display: grid; grid-template-columns: var(--admin-sidebar-width) 1fr; min-height: 100vh; }

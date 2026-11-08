@@ -9,7 +9,7 @@ use DateTimeImmutable;
 /**
  * Kiểm tra dữ liệu biểu mẫu phía server.
  *
- * Quy tắc viết dạng chuỗi, ngăn cách bằng "|": required, max:N, email, url, date, datetime, in:a,b,c, integer.
+ * Quy tắc viết dạng chuỗi, ngăn cách bằng "|": required, max:N, min:N, email, url, date, datetime, in:a,b,c, integer.
  * Mỗi trường chỉ báo lỗi đầu tiên gặp. Trường rỗng mà không "required" thì bỏ qua các quy tắc còn lại.
  */
 final class Validator
@@ -58,6 +58,7 @@ final class Validator
 
             $error = match ($name) {
                 'max' => mb_strlen((string) $value) > (int) $argument ? $this->lang->get('validation.max', ['max' => $argument]) : null,
+                'min' => mb_strlen((string) $value) < (int) $argument ? $this->lang->get('validation.min', ['min' => $argument]) : null,
                 'email' => filter_var($value, FILTER_VALIDATE_EMAIL) === false ? $this->lang->get('validation.email') : null,
                 'url' => self::isHttpUrl((string) $value) ? null : $this->lang->get('validation.url'),
                 'date' => self::isDate((string) $value, 'Y-m-d') ? null : $this->lang->get('validation.date'),

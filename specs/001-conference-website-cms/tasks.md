@@ -160,28 +160,28 @@ Một project web render phía server tại gốc repo: `public/`, `src/`, `temp
 
 ### Tests for User Story 5 ⚠️
 
-- [ ] T070 [P] [US5] Unit test `LoginThrottle`: lần sai thứ 5 đặt `locked_until = now + 15 phút`; khi đang khoá từ chối kể cả mật khẩu đúng; đăng nhập đúng đặt lại `failed_login_count = 0`, trong `tests/Unit/Services/LoginThrottleTest.php`
-- [ ] T071 [P] [US5] Integration test `PasswordResetService`: token 32 byte, lưu SHA-256, hết hạn sau 60 phút, dùng một lần; đặt mật khẩu mới tăng `session_epoch`, trong `tests/Integration/PasswordResetServiceTest.php`
-- [ ] T072 [P] [US5] HTTP test đăng nhập/đăng xuất/hết phiên: chưa đăng nhập vào `/admin` → 302 `/admin/login?next=/admin`; sai → thông báo tiếng Việt; không thao tác 30 phút → phải đăng nhập lại; session id đổi sau đăng nhập; `<html lang="vi">`, trong `tests/Http/Admin/LoginTest.php`
-- [ ] T073 [P] [US5] HTTP test quên mật khẩu: thông báo giống nhau dù email tồn tại hay không; token hết hạn/đã dùng → lỗi; tự đổi mật khẩu sai mật khẩu hiện tại → 422; mật khẩu < 8 ký tự → 422, trong `tests/Http/Admin/PasswordTest.php`
-- [ ] T074 [P] [US5] HTTP test quản lý tài khoản: admin tạo/sửa/khoá/mở khoá; email trùng → 422; không khoá/hạ vai trò quản trị viên cuối cùng; tài khoản bị khoá không đăng nhập được và phiên đang mở bị chấm dứt; editor truy cập `/admin/users`, `/admin/settings`, `/admin/menu`, `/admin/activity`, `/admin/conferences` → 403 (kiểm tra ở server), trong `tests/Http/Admin/UsersTest.php`
-- [ ] T075 [P] [US5] HTTP test POST thiếu/sai token CSRF → 419, trong `tests/Http/Admin/CsrfTest.php`
-- [ ] T076 [P] [US5] HTTP test trang lỗi khu vực quản trị trong `tests/Http/Admin/ErrorPagesTest.php`: đã đăng nhập mở `/admin/khong-ton-tai` → 404 tiếng Việt, `<html lang="vi">`; 403 và 419 hiện `templates/admin/error.php` tiếng Việt; ngoại lệ trong controller quản trị → 500 tiếng Việt; header CSP `/admin` có `style-src 'self' 'unsafe-inline'` còn trang công khai thì không
-- [ ] T077 [P] [US5] Integration test CLI `bin/create-admin.php` trong `tests/Integration/Cli/CreateAdminTest.php`: tạo tài khoản `role = admin`, `is_active = 1`, in mật khẩu tạm 12 ký tự đăng nhập được; email trùng → exit code ≠ 0 kèm thông báo tiếng Việt; thiếu tham số → in hướng dẫn sử dụng, exit code ≠ 0
+- [X] T070 [P] [US5] Unit test `LoginThrottle`: lần sai thứ 5 đặt `locked_until = now + 15 phút`; khi đang khoá từ chối kể cả mật khẩu đúng; đăng nhập đúng đặt lại `failed_login_count = 0`, trong `tests/Unit/Services/LoginThrottleTest.php`
+- [X] T071 [P] [US5] Integration test `PasswordResetService`: token 32 byte, lưu SHA-256, hết hạn sau 60 phút, dùng một lần; đặt mật khẩu mới tăng `session_epoch`, trong `tests/Integration/PasswordResetServiceTest.php`
+- [X] T072 [P] [US5] HTTP test đăng nhập/đăng xuất/hết phiên: chưa đăng nhập vào `/admin` → 302 `/admin/login?next=/admin`; sai → thông báo tiếng Việt; không thao tác 30 phút → phải đăng nhập lại; session id đổi sau đăng nhập; `<html lang="vi">`, trong `tests/Http/Admin/LoginTest.php`
+- [X] T073 [P] [US5] HTTP test quên mật khẩu: thông báo giống nhau dù email tồn tại hay không; token hết hạn/đã dùng → lỗi; tự đổi mật khẩu sai mật khẩu hiện tại → 422; mật khẩu < 8 ký tự → 422, trong `tests/Http/Admin/PasswordTest.php`
+- [X] T074 [P] [US5] HTTP test quản lý tài khoản: admin tạo/sửa/khoá/mở khoá; email trùng → 422; không khoá/hạ vai trò quản trị viên cuối cùng; tài khoản bị khoá không đăng nhập được và phiên đang mở bị chấm dứt; editor truy cập `/admin/users` → 403 (kiểm tra ở server), trong `tests/Http/Admin/UsersTest.php` (403 cho `/admin/settings`, `/admin/menu` kiểm ở US6; `/admin/activity` ở US7; `/admin/conferences` ở US8 — các trang này chưa tồn tại ở US5)
+- [X] T075 [P] [US5] HTTP test POST thiếu/sai token CSRF → 419, trong `tests/Http/Admin/CsrfTest.php`
+- [X] T076 [P] [US5] HTTP test trang lỗi khu vực quản trị trong `tests/Http/Admin/ErrorPagesTest.php`: đã đăng nhập mở `/admin/khong-ton-tai` → 404 tiếng Việt, `<html lang="vi">`; 403 và 419 hiện `templates/admin/error.php` tiếng Việt; ngoại lệ trong controller quản trị → 500 tiếng Việt; header CSP `/admin` có `style-src 'self' 'unsafe-inline'` còn trang công khai thì không
+- [X] T077 [P] [US5] Integration test CLI `bin/create-admin.php` trong `tests/Integration/Cli/CreateAdminTest.php`: tạo tài khoản `role = admin`, `is_active = 1`, in mật khẩu tạm 12 ký tự đăng nhập được; email trùng → exit code ≠ 0 kèm thông báo tiếng Việt; thiếu tham số → in hướng dẫn sử dụng, exit code ≠ 0
 
 ### Implementation for User Story 5
 
-- [ ] T078 [P] [US5] Viết `src/Models/User.php` và `src/Repositories/UserRepository.php` (`findByEmail()` — email lưu chữ thường, `create()`, `update()`, `countActiveAdmins()`, `incrementEpoch()`)
-- [ ] T079 [P] [US5] Viết `src/Services/LoginThrottle.php` (5 lần, 15 phút)
-- [ ] T080 [US5] Viết `src/Core/Auth.php`: `attempt()` (`password_verify`, throttle, `regenerate()` session, ghi `login`/`login_failed`), `user()`, `logout()`, kiểm tra hết hạn 30 phút không hoạt động, kiểm tra `session_epoch` và `is_active` mỗi request, `can(permission)` với `A` = admin, `E` = admin + editor
-- [ ] T081 [US5] Nối `Auth` vào `src/Core/App.php`: route có permission → chưa đăng nhập 302 tới `/admin/login?next=…`, thiếu quyền 403 "Bạn không có quyền thực hiện thao tác này."
-- [ ] T082 [P] [US5] Viết `src/Services/Mailer.php` bọc PHPMailer (SMTP từ `.env`; trong `APP_ENV=testing` ghi thư vào mảng để test đọc) và `src/Services/PasswordResetService.php`
-- [ ] T083 [US5] Viết `src/Controllers/Admin/AuthController.php` + templates `templates/admin/auth/login.php`, `forgot-password.php`, `reset-password.php`, `templates/admin/emails/reset-password.php` (tiếng Việt)
-- [ ] T084 [US5] Viết `src/Controllers/Admin/ProfileController.php` + `templates/admin/profile/password.php`
-- [ ] T085 [US5] Viết `src/Controllers/Admin/UserController.php` + `templates/admin/users/index.php`, `form.php` (họ tên, email, vai trò; nút khoá/mở khoá có xác nhận)
-- [ ] T086 [US5] Viết `src/Controllers/Admin/DashboardController.php` bản khởi đầu + `templates/admin/dashboard.php` (lời chào, lối tắt; số liệu thêm ở US2)
-- [ ] T087 [US5] Thêm route tài khoản theo contracts/admin-routes.md vào `src/routes.php`
-- [ ] T088 [US5] Viết `bin/create-admin.php <email> "<họ tên>"`: tạo quản trị viên, in mật khẩu tạm ngẫu nhiên 12 ký tự
+- [X] T078 [P] [US5] Viết `src/Models/User.php` và `src/Repositories/UserRepository.php` (`findByEmail()` — email lưu chữ thường, `create()`, `update()`, `countActiveAdmins()`, `incrementEpoch()`)
+- [X] T079 [P] [US5] Viết `src/Services/LoginThrottle.php` (5 lần, 15 phút)
+- [X] T080 [US5] Viết `src/Core/Auth.php`: `attempt()` (`password_verify`, throttle, `regenerate()` session, ghi `login`/`login_failed`), `user()`, `logout()`, kiểm tra hết hạn 30 phút không hoạt động, kiểm tra `session_epoch` và `is_active` mỗi request, `can(permission)` với `A` = admin, `E` = admin + editor
+- [X] T081 [US5] Nối `Auth` vào `src/Core/App.php`: route có permission → chưa đăng nhập 302 tới `/admin/login?next=…`, thiếu quyền 403 "Bạn không có quyền thực hiện thao tác này."
+- [X] T082 [P] [US5] Viết `src/Services/Mailer.php` bọc PHPMailer (SMTP từ `.env`; trong `APP_ENV=testing` ghi thư vào mảng để test đọc) và `src/Services/PasswordResetService.php`
+- [X] T083 [US5] Viết `src/Controllers/Admin/AuthController.php` + templates `templates/admin/auth/login.php`, `forgot-password.php`, `reset-password.php`, `templates/admin/emails/reset-password.php` (tiếng Việt)
+- [X] T084 [US5] Viết `src/Controllers/Admin/ProfileController.php` + `templates/admin/profile/password.php`
+- [X] T085 [US5] Viết `src/Controllers/Admin/UserController.php` + `templates/admin/users/index.php`, `form.php` (họ tên, email, vai trò; nút khoá/mở khoá có xác nhận)
+- [X] T086 [US5] Viết `src/Controllers/Admin/DashboardController.php` bản khởi đầu + `templates/admin/dashboard.php` (lời chào, lối tắt; số liệu thêm ở US2)
+- [X] T087 [US5] Thêm route tài khoản theo contracts/admin-routes.md vào `src/routes.php`
+- [X] T088 [US5] Viết `bin/create-admin.php <email> "<họ tên>"`: tạo quản trị viên, in mật khẩu tạm ngẫu nhiên 12 ký tự
 
 **Checkpoint**: Đăng nhập, phân quyền, tài khoản hoạt động; mọi test US5 pass.
 

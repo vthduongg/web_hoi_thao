@@ -60,7 +60,7 @@ $menu = [
     <div class="admin-main">
         <div class="admin-topbar">
             <div>
-                <?php if (($allConferences ?? []) !== []): ?>
+                <?php if (count($allConferences ?? []) > 1): ?>
                     <form method="post" action="/admin/switch-conference" class="inline-form">
                         <input type="hidden" name="_token" value="<?= e($csrfToken ?? '') ?>">
                         <label for="switch-conference"><?= e(t('admin.editing_conference')) ?></label>

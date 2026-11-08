@@ -57,6 +57,12 @@ final class ValidatorTest extends TestCase
         ], $errors);
     }
 
+    public function test_min_length(): void
+    {
+        self::assertSame([], $this->validator->validate(['p' => 'ổổổổổổổổ'], ['p' => 'min:8']));
+        self::assertSame(['p' => 'Tối thiểu 8 ký tự.'], $this->validator->validate(['p' => 'short'], ['p' => 'min:8']));
+    }
+
     public function test_optional_empty_fields_skip_format_rules(): void
     {
         self::assertSame([], $this->validator->validate(['email' => '', 'url' => null], ['email' => 'email', 'url' => 'url']));

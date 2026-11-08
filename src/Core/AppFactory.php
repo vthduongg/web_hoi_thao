@@ -7,6 +7,7 @@ namespace App\Core;
 use App\Repositories\ConferenceRepository;
 use App\Services\ActivityLogger;
 use App\Services\HtmlSanitizer;
+use App\Services\Mailer;
 
 /** Tạo App với đầy đủ dịch vụ. Dùng ở public/index.php và trong test. */
 final class AppFactory
@@ -30,6 +31,8 @@ final class AppFactory
             conferences: new ConferenceRepository($db),
             environment: $environment,
         );
+        $services->auth = new Auth($db, $session, $services->logger);
+        $services->mailer = Mailer::fromEnv($environment);
         $router = new Router();
         (require $rootDir . '/src/routes.php')($router);
 

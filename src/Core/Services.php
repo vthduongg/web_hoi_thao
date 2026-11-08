@@ -7,6 +7,7 @@ namespace App\Core;
 use App\Repositories\ConferenceRepository;
 use App\Services\ActivityLogger;
 use App\Services\HtmlSanitizer;
+use App\Services\Mailer;
 
 /**
  * Nơi giữ các đối tượng dùng chung trong một request (CSDL, session, view...).
@@ -16,8 +17,11 @@ use App\Services\HtmlSanitizer;
  */
 final class Services
 {
-    /** Gán trong AppFactory (US5: đăng nhập và phân quyền). */
+    /** Đăng nhập và phân quyền (gán trong AppFactory). */
     public ?Auth $auth = null;
+
+    /** Gửi email (gán trong AppFactory; khi chạy test chỉ ghi vào bộ nhớ). */
+    public ?Mailer $mailer = null;
 
     public function __construct(
         public readonly string $rootDir,
