@@ -14,7 +14,7 @@
         <ul class="sponsor-grid">
             <?php foreach ($tier->sponsors as $sponsor): ?>
                 <li class="sponsor-grid__item">
-                    <?php $logo = '<img src="' . e(upload_url($sponsor->logoPath)) . '" alt="' . e($sponsor->name) . '" loading="lazy" width="200" height="100">'; ?>
+                    <?php $logo = '<img src="' . e(upload_url($sponsor->logoPath)) . '"' . srcset_attr($sponsor->logoSmallPath, null, '200px') . ' alt="' . e($sponsor->name) . '" loading="lazy" width="200" height="100">'; ?>
                     <?php if (($sponsor->websiteUrl ?? '') !== ''): ?>
                         <a href="<?= e($sponsor->websiteUrl) ?>" target="_blank" rel="noopener"><?= $logo /* giá trị bên trong đã thoát */ ?></a>
                     <?php else: ?>

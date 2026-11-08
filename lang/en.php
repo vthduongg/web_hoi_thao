@@ -44,6 +44,9 @@ return [
 
     // Chia sẻ, trang liên quan
     'share.title' => 'Share this page',
+    'share.facebook' => 'Share on Facebook',
+    'share.x' => 'Share on X',
+    'share.linkedin' => 'Share on LinkedIn',
     'share.copy' => 'Copy link',
     'share.copied' => 'Link copied',
     'share.copy_failed' => 'Could not copy the link',

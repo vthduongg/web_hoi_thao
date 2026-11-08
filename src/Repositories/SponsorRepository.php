@@ -19,7 +19,7 @@ final class SponsorRepository
     public function visibleTiers(int $conferenceId): array
     {
         $sponsors = array_map([Sponsor::class, 'fromRow'], $this->db->query(
-            'SELECT s.*, f.stored_path AS logo_path
+            'SELECT s.*, f.stored_path AS logo_path, f.thumb_small_path AS logo_small_path
              FROM sponsors s JOIN media_files f ON f.id = s.logo_media_id AND f.deleted_at IS NULL
              WHERE s.conference_id = ? AND s.is_visible = 1 AND s.deleted_at IS NULL
              ORDER BY s.sort_order, s.id',

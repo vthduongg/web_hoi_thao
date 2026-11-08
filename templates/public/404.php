@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="<?= e(asset('css/public.css')) ?>">
 </head>
 <body>
+    <a class="skip-link" href="#main-content"><?= e(t('common.skip_to_content')) ?></a>
     <main class="error-page" id="main-content">
         <p class="error-page__code">404</p>
         <h1><?= e(t('error.not_found')) ?></h1>

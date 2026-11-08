@@ -38,7 +38,7 @@
         </section>
     <?php endforeach; ?>
 <?php elseif ($programFile !== null && $programFile->isImage()): ?>
-    <p><img src="<?= e(upload_url($programFile->storedPath)) ?>" alt="<?= e(t('program.image_alt')) ?>"></p>
+    <p><img src="<?= e(upload_url($programFile->storedPath)) ?>"<?= srcset_attr($programFile->thumbSmallPath, $programFile->thumbLargePath, '(max-width: 1200px) 100vw, 1200px') ?> alt="<?= e(t('program.image_alt')) ?>" loading="lazy"<?= $programFile->width ? ' width="' . e($programFile->width) . '" height="' . e($programFile->height) . '"' : '' ?>></p>
 <?php elseif ($programFile !== null): ?>
     <p><a class="button button--primary" href="<?= e(upload_url($programFile->storedPath)) ?>" target="_blank" rel="noopener"><?= e(t('program.download')) ?> (<?= e($programFile->originalName) ?>)</a></p>
 <?php else: ?>

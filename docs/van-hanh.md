@@ -91,3 +91,23 @@ chọn ghi đè khi được hỏi.
 - `public/web.config` chặn chạy script trong `public/uploads/` và gửi header `X-Content-Type-Options: nosniff` cho tệp tải lên.
 - Website gửi header Content-Security-Policy riêng cho trang công khai và trang quản trị (research.md R18).
 - Thư viện tệp không nhận SVG và kiểm tra loại tệp theo nội dung, không theo đuôi tệp.
+
+## 5. Kết quả rà soát bảo mật (08/11/2026)
+
+Đối chiếu research.md R6 (lọc nội dung, tải tệp), R15 (đăng nhập, phiên), R18 (CSP).
+
+| Hạng mục | Kết quả | Bằng chứng |
+|---|---|---|
+| CSP trang công khai: `script-src 'self'; style-src 'self'`, iframe chỉ YouTube / Google Maps | Đạt | `src/Core/App.php` (`CSP_PUBLIC`); `tests/Http/ErrorPagesTest.php` |
+| CSP trang quản trị: như trên, thêm `style-src 'unsafe-inline'` cho TinyMCE và `blob:` cho ảnh xem trước | Đạt | `src/Core/App.php` (`CSP_ADMIN`) |
+| Trình soạn thảo, slider, menu điện thoại, bản đồ, video chạy được dưới CSP | Đạt | Mọi test Playwright tự fail khi console báo vi phạm CSP (`tests/e2e/fixtures.js`); đã kiểm chứng fixture bắt được bằng một inline script cố ý |
+| Header khác: `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy` | Đạt | `App::withSecurityHeaders` |
+| Cookie phiên: `HttpOnly`, `SameSite=Lax`; `Secure` tự bật khi `APP_URL` bắt đầu bằng `https://`; đổi id phiên khi đăng nhập/đăng xuất | Đạt | `src/Core/NativeSessionStore.php`, `src/Core/AppFactory.php`. **Production phải đặt `APP_URL=https://…`** |
+| `public/uploads/` không chạy script (`accessPolicy="Read"`, chỉ StaticFile) và gửi `nosniff` | Đạt | `public/web.config` |
+| Không nhận SVG qua mọi đường tải lên | Đạt | Đường lưu tệp duy nhất là `MediaUploader` (loại tệp xác định bằng nội dung, danh sách trắng không có SVG; test `test_rejects_svg_even_when_renamed`). Nhập thành viên ban chỉ đọc `.xlsx`/`.csv` từ tệp tạm, không lưu tệp |
+| HTML từ trình soạn thảo được lọc bằng HTML Purifier (bỏ script, sự kiện `on*`, `javascript:`, `style`) | Đạt | `src/Services/HtmlSanitizer.php`, `tests/Unit/Services/HtmlSanitizerTest.php` |
+| Đăng nhập: khoá 15 phút sau 5 lần sai, không lộ email có tồn tại, token đặt lại mật khẩu băm SHA-256, một lần, 60 phút | Đạt | `src/Core/Auth.php`, `src/Services/LoginThrottle.php`, `src/Services/PasswordResetService.php` |
+| CSRF cho mọi form POST | Đạt | `src/Core/Csrf.php`, kiểm tra trong `App::handle` |
+
+Việc cần làm khi lên máy chủ thật: bật HTTPS và đặt `APP_URL=https://…`; đặt `APP_ENV=production` (gửi email thật; trang lỗi không bao giờ hiện chi tiết kỹ thuật cho người xem);
+giới hạn quyền đọc `.env`.

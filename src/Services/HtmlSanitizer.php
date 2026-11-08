@@ -43,6 +43,12 @@ final class HtmlSanitizer
 
     public function clean(?string $html): string
     {
-        return $html === null || trim($html) === '' ? '' : trim($this->purifier->purify($html));
+        if ($html === null || trim($html) === '') {
+            return '';
+        }
+        // Tiêu đề trang đã là <h1> duy nhất; h1 dán vào nội dung được hạ thành h2
+        $html = (string) preg_replace('/<(\/?)h1\b/i', '<$1h2', $html);
+
+        return trim($this->purifier->purify($html));
     }
 }

@@ -1,6 +1,6 @@
 // Test trình duyệt cho Travel Info và Contact (US4): nút "Điểm tham quan", link YouTube/Google Maps dán vào nội dung,
 // khung nhúng co giãn trên điện thoại, liên kết tel:/mailto:.
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require('./fixtures');
 const { loginAs } = require('./helpers');
 
 test('chèn điểm tham quan, dán link YouTube và bản đồ rồi lưu → trang công khai có khung nhúng', async ({ page, viewport }) => {

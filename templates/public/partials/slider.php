@@ -10,7 +10,7 @@
         <?php foreach ($slides as $index => $slide): ?>
             <figure class="slider__slide<?= $index === 0 ? ' is-active' : '' ?>" data-slide data-index="<?= e($index) ?>"
                     aria-roledescription="slide" aria-label="<?= e(($index + 1) . ' / ' . count($slides)) ?>"<?= $index === 0 ? '' : ' aria-hidden="true"' ?>>
-                <?php $image = '<img src="' . e(upload_url($slide->largeImagePath ?? $slide->imagePath)) . '" alt="' . e($slide->altText) . '"'
+                <?php $image = '<img src="' . e(upload_url($slide->largeImagePath ?? $slide->imagePath)) . '"' . srcset_attr($slide->smallImagePath, $slide->largeImagePath, '100vw') . ' alt="' . e($slide->altText) . '"'
                     . ($index === 0 ? '' : ' loading="lazy"') . ' width="1200" height="450">'; ?>
                 <?php if (($slide->linkUrl ?? '') !== ''): ?>
                     <a href="<?= e($slide->linkUrl) ?>"><?= $image /* giá trị bên trong đã thoát */ ?></a>

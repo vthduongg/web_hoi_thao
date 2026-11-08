@@ -16,6 +16,7 @@ final class Slide
         public readonly ?string $linkUrl,
         public readonly int $sortOrder,
         public readonly bool $isVisible,
+        public readonly ?string $smallImagePath = null,
     ) {
     }
 
@@ -31,6 +32,7 @@ final class Slide
             linkUrl: $row['link_url'],
             sortOrder: (int) $row['sort_order'],
             isVisible: (bool) $row['is_visible'],
+            smallImagePath: $row['thumb_small_path'] ?? null,
         );
     }
 }

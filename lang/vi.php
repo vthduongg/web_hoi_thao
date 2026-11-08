@@ -461,6 +461,7 @@ return [
     'media.in_use' => 'Tệp này đang được dùng ở:',
     'media.in_use_warning' => 'Nếu xoá, các vị trí trên sẽ không hiển thị được tệp. Tệp vào thùng rác và khôi phục được trong 30 ngày.',
     'media.delete_anyway' => 'Vẫn xoá tệp',
+    'media.size_kb' => ':size KB',
     'media.choose_file' => 'Chọn tệp',
     'media.picker_title' => 'Chọn tệp từ thư viện',
     'media.search_label' => 'Tìm theo tên tệp',

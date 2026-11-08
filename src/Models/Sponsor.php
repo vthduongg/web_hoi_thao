@@ -13,6 +13,7 @@ final class Sponsor
         public readonly string $name,
         public readonly string $logoPath,
         public readonly ?string $websiteUrl,
+        public readonly ?string $logoSmallPath = null,
     ) {
     }
 
@@ -25,6 +26,7 @@ final class Sponsor
             name: $row['name'],
             logoPath: $row['logo_path'],
             websiteUrl: $row['website_url'],
+            logoSmallPath: $row['logo_small_path'] ?? null,
         );
     }
 }

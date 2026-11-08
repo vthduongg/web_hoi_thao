@@ -1,6 +1,6 @@
 // Test trình duyệt cho cây menu (sortable-list.js chế độ lồng cấp, tối đa 2 cấp) — US6.
 // Menu seed: Conference (5 mục con), Program, Paper Submission, Sponsor, Contact, Travel Info.
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require('./fixtures');
 const { loginAs } = require('./helpers');
 
 test.skip(({ viewport }) => viewport.width < 900, 'trang quản trị kiểm tra ở khung máy tính');

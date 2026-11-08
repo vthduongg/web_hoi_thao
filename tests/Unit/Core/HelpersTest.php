@@ -15,6 +15,29 @@ final class HelpersTest extends TestCase
         self::assertSame('&lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt; &amp; &#039;', e('<script>alert("x")</script> & \''));
     }
 
+    public function test_srcset_lists_available_thumbnails(): void
+    {
+        self::assertSame(
+            ' srcset="/uploads/a-400.jpg 400w, /uploads/a-1200.jpg 1200w" sizes="100vw"',
+            srcset_attr('uploads/a-400.jpg', 'uploads/a-1200.jpg', '100vw'),
+        );
+        self::assertSame(' srcset="/uploads/a-400.jpg 400w" sizes="240px"', srcset_attr('uploads/a-400.jpg', null, '240px'));
+    }
+
+    public function test_lazy_images_adds_loading_once(): void
+    {
+        self::assertSame(
+            '<p><img loading="lazy" src="/a.jpg" alt="A"> <img loading="eager" src="/b.jpg" alt="B"></p>',
+            lazy_images('<p><img src="/a.jpg" alt="A"> <img loading="eager" src="/b.jpg" alt="B"></p>'),
+        );
+        self::assertSame('<p>No images</p>', lazy_images('<p>No images</p>'));
+    }
+
+    public function test_srcset_is_empty_without_thumbnails(): void
+    {
+        self::assertSame('', srcset_attr(null, null, '100vw'));
+    }
+
     public function test_e_accepts_null_and_numbers(): void
     {
         self::assertSame('', e(null));

@@ -16,6 +16,11 @@ final class HtmlSanitizerTest extends TestCase
         $this->sanitizer = new HtmlSanitizer(sys_get_temp_dir() . '/htmlpurifier-test');
     }
 
+    public function test_pasted_h1_becomes_h2(): void
+    {
+        self::assertSame('<h2>Venue</h2><p>Hanoi</p>', $this->sanitizer->clean('<H1>Venue</h1><p>Hanoi</p>'));
+    }
+
     public function test_keeps_tables_links_and_images(): void
     {
         $html = '<table><tbody><tr><td>A</td></tr></tbody></table>'

@@ -54,6 +54,8 @@
     menubar: false,
     toolbar: isCompact ? compactToolbar : fullToolbar,
     toolbar_mode: 'wrap', // thanh công cụ xuống dòng thay vì giấu nút vào menu "…" (dễ thấy hơn với người mới)
+    // Không có Heading 1: tiêu đề trang đã là h1 duy nhất (tiếp cận cho trình đọc màn hình)
+    block_formats: 'Đoạn văn=p; Tiêu đề lớn=h2; Tiêu đề vừa=h3; Tiêu đề nhỏ=h4',
     promotion: false,
     branding: false,
     height: isCompact ? 260 : 480,

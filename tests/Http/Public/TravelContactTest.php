@@ -38,7 +38,7 @@ final class TravelContactTest extends HttpTestCase
         self::assertSame(2, substr_count($body, '<div class="embed-responsive"><iframe'));
         $this->assertSee('src="https://www.google.com/maps/embed?pb=!1m18"');
         $this->assertSee('src="https://www.youtube-nocookie.com/embed/abc123"');
-        $this->assertSee('<div class="attraction-card"><img src="/uploads/t/temple.jpg" alt="Tay Thien Temple"');
+        $this->assertSee('<div class="attraction-card"><img loading="lazy" src="/uploads/t/temple.jpg" alt="Tay Thien Temple"');
         $this->assertSee('A famous pagoda.');
     }
 

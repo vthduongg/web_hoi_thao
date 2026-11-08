@@ -98,3 +98,30 @@ function upload_url(?string $storedPath): string
 {
     return $storedPath ? '/' . ltrim(str_replace('\\', '/', $storedPath), '/') : '';
 }
+
+/**
+ * Thuộc tính srcset + sizes cho ảnh có thumbnail 400 px / 1200 px (tạo lúc tải lên).
+ * Trả về chuỗi rỗng khi ảnh không có thumbnail (ảnh nhỏ hơn 400 px), trình duyệt dùng src như thường.
+ * Ví dụ: <img src="..."<?= srcset_attr($small, $large, '240px') ?>>
+ */
+function srcset_attr(?string $smallPath, ?string $largePath, string $sizes): string
+{
+    $candidates = array_filter([
+        $smallPath ? upload_url($smallPath) . ' 400w' : null,
+        $largePath ? upload_url($largePath) . ' 1200w' : null,
+    ]);
+    if ($candidates === []) {
+        return '';
+    }
+
+    return ' srcset="' . e(implode(', ', $candidates)) . '" sizes="' . e($sizes) . '"';
+}
+
+/**
+ * Thêm loading="lazy" cho ảnh trong nội dung do trình soạn thảo tạo (HTML đã lọc bằng HTML Purifier,
+ * vốn bỏ thuộc tính loading khi lưu). Ảnh đã có loading thì giữ nguyên.
+ */
+function lazy_images(string $sanitizedHtml): string
+{
+    return (string) preg_replace('/<img(?![^>]*\sloading=)\s/i', '<img loading="lazy" ', $sanitizedHtml);
+}

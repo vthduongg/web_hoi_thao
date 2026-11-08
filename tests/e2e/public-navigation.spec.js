@@ -1,6 +1,6 @@
 // Test trình duyệt cho menu-mobile.js, slider.js, copy-link.js (US1).
 // Dữ liệu từ `php bin/seed.php --test --reset`: menu có nhóm "Conference", trang chủ có 3 slide.
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require('./fixtures');
 
 test.describe('Menu trên điện thoại', () => {
   test.skip(({ viewport }) => viewport.width > 600, 'chỉ chạy ở khung điện thoại');

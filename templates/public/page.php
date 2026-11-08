@@ -12,7 +12,7 @@
 <article class="container page-content">
     <h1><?= e($page->title) ?></h1>
 
-    <?= $page->bodyHtml /* đã lọc bằng HTML Purifier khi lưu */ ?>
+    <?= lazy_images($page->bodyHtml) /* đã lọc bằng HTML Purifier khi lưu */ ?>
 
     <?php if ($moduleTemplate !== null): ?>
         <?= partial($moduleTemplate, $moduleData) ?>

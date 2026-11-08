@@ -12,7 +12,7 @@
         <?php foreach ($speakers as $speaker): ?>
             <article class="card speaker-card">
                 <?php if ($speaker->photoPath !== null): ?>
-                    <img class="speaker-card__photo" src="<?= e(upload_url($speaker->photoPath)) ?>" alt="<?= e($speaker->displayName()) ?>" loading="lazy" width="240" height="240">
+                    <img class="speaker-card__photo" src="<?= e(upload_url($speaker->photoPath)) ?>"<?= srcset_attr($speaker->photoSmallPath, null, '240px') ?> alt="<?= e($speaker->displayName()) ?>" loading="lazy" width="240" height="240">
                 <?php endif; ?>
                 <h2 class="speaker-card__name"><?= e($speaker->displayName()) ?></h2>
                 <?php if (($speaker->affiliation ?? '') !== '' || ($speaker->country ?? '') !== ''): ?>

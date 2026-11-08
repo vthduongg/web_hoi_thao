@@ -19,7 +19,7 @@ final class HomeRepository
     public function visibleSlides(int $conferenceId): array
     {
         return array_map([Slide::class, 'fromRow'], $this->db->query(
-            'SELECT s.*, m.stored_path, m.thumb_large_path
+            'SELECT s.*, m.stored_path, m.thumb_small_path, m.thumb_large_path
              FROM slides s JOIN media_files m ON m.id = s.media_id
              WHERE s.conference_id = ? AND s.is_visible = 1 AND s.deleted_at IS NULL AND m.deleted_at IS NULL
              ORDER BY s.sort_order, s.id',

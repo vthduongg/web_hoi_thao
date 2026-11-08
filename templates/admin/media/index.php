@@ -49,7 +49,7 @@
                     <span class="media-grid__icon" aria-hidden="true">📄</span>
                 <?php endif; ?>
                 <a class="media-grid__name" href="<?= e(upload_url($item->storedPath)) ?>" target="_blank" rel="noopener"><?= e($item->originalName) ?></a>
-                <span class="form-field__hint"><?= e(number_format($item->sizeBytes / 1024, 0, ',', '.')) ?> KB</span>
+                <span class="form-field__hint"><?= e(t('media.size_kb', ['size' => number_format($item->sizeBytes / 1024, 0, ',', '.')])) ?></span>
                 <span>
                     <a class="button button--small" href="/admin/media/<?= e($item->id) ?>"><?= e(t('common.edit')) ?></a>
                     <?= partial('admin/partials/confirm-delete', ['action' => "/admin/media/{$item->id}/delete", 'csrfToken' => $csrfToken]) ?>

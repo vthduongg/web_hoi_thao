@@ -1,6 +1,6 @@
 // Test trình duyệt cho editor.js (TinyMCE) và media-picker.js (hộp chọn tệp) — US2.
 // Dữ liệu seed --test có: trang paper-submission, ảnh "no-alt.jpg" (chưa có mô tả), tài liệu "Guidelines.pdf".
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require('./fixtures');
 const { loginAs } = require('./helpers');
 
 test.skip(({ viewport }) => viewport.width < 900, 'trang quản trị kiểm tra ở khung máy tính');

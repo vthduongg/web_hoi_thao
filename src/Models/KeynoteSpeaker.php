@@ -16,6 +16,7 @@ final class KeynoteSpeaker
         public readonly ?string $country,
         public readonly ?string $talkTitle,
         public readonly string $bioHtml,
+        public readonly ?string $photoSmallPath = null,
     ) {
     }
 
@@ -31,6 +32,7 @@ final class KeynoteSpeaker
             country: $row['country'],
             talkTitle: $row['talk_title'],
             bioHtml: (string) $row['bio_html'],
+            photoSmallPath: $row['photo_small_path'] ?? null,
         );
     }
 

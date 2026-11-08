@@ -127,6 +127,8 @@ function registerAdminOnlyRoutes(Router $r): void
 function registerPublicRoutes(Router $r): void
 {
     $r->get('/', 'Public\\HomeController@index');
+    $r->get('/sitemap.xml', 'Public\\SitemapController@sitemap');
+    $r->get('/robots.txt', 'Public\\SitemapController@robots');
     $r->get('/past-conferences', 'Public\\ArchiveController@index');
     $r->get('/{year}', 'Public\\ArchiveController@home');
     $r->get('/{year}/{slug}', 'Public\\ArchiveController@page');

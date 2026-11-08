@@ -1,6 +1,6 @@
 // Test trình duyệt cho confirm-delete.js — US2.
 // Dữ liệu seed --test có trang "E2E Delete Me" chỉ dùng cho test này.
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require('./fixtures');
 const { loginAs } = require('./helpers');
 
 test.skip(({ viewport }) => viewport.width < 900, 'trang quản trị kiểm tra ở khung máy tính');

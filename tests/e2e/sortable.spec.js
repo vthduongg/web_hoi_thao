@@ -1,6 +1,6 @@
 // Test trình duyệt cho sortable-list.js trên trang quản lý mốc thời gian (US3).
 // Dữ liệu seed --test có 8 mốc thời gian.
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require('./fixtures');
 const { loginAs } = require('./helpers');
 
 test.skip(({ viewport }) => viewport.width < 900, 'trang quản trị kiểm tra ở khung máy tính');
