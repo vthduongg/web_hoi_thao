@@ -271,16 +271,16 @@ Một project web render phía server tại gốc repo: `public/`, `src/`, `temp
 
 ### Tests for User Story 4 ⚠️
 
-- [ ] T133 [P] [US4] Unit test `EmbedConverter`: link YouTube (`watch?v=`, `youtu.be/`) → iframe `youtube-nocookie.com/embed/…`; link/iframe Google Maps embed → giữ; host khác → từ chối, trong `tests/Unit/Services/EmbedConverterTest.php`
-- [ ] T134 [P] [US4] HTTP test `/travel-info` có iframe bản đồ + video bọc trong `.embed-responsive` và khối điểm tham quan (ảnh có `alt` + mô tả); `/contact` có `mailto:`/`tel:`; mọi trang có nút "Menu" với `aria-expanded`, trong `tests/Http/Public/TravelContactTest.php`
-- [ ] T135 [P] [US4] Playwright test `tests/e2e/travel-info.spec.js`: trong trình soạn thảo, nút "Điểm tham quan" chèn khối ảnh + tiêu đề + mô tả; dán link YouTube và link Google Maps rồi lưu → trang `/travel-info` có iframe `youtube-nocookie.com` và bản đồ; ở 360 px iframe co giãn theo chiều rộng, trang không cuộn ngang; ở `/contact` link `tel:`/`mailto:` có `href` đúng giá trị đã nhập
+- [X] T133 [P] [US4] Unit test `EmbedConverter`: link YouTube (`watch?v=`, `youtu.be/`) → iframe `youtube-nocookie.com/embed/…`; link/iframe Google Maps embed → giữ; host khác → từ chối, trong `tests/Unit/Services/EmbedConverterTest.php`
+- [X] T134 [P] [US4] HTTP test `/travel-info` có iframe bản đồ + video bọc trong `.embed-responsive` và khối điểm tham quan (ảnh có `alt` + mô tả); `/contact` có `mailto:`/`tel:`; mọi trang có nút "Menu" với `aria-expanded`, trong `tests/Http/Public/TravelContactTest.php`
+- [X] T135 [P] [US4] Playwright test `tests/e2e/travel-info.spec.js`: trong trình soạn thảo, nút "Điểm tham quan" chèn khối ảnh + tiêu đề + mô tả; dán link YouTube và link Google Maps rồi lưu → trang `/travel-info` có iframe `youtube-nocookie.com` và bản đồ; ở 360 px iframe co giãn theo chiều rộng, trang không cuộn ngang; ở `/contact` link `tel:`/`mailto:` có `href` đúng giá trị đã nhập
 
 ### Implementation for User Story 4
 
-- [ ] T136 [P] [US4] Viết `src/Services/EmbedConverter.php` và nối vào `PageService` khi lưu (đổi link dán thành iframe hợp lệ trước khi lọc HTML)
-- [ ] T137 [P] [US4] Thêm vào `public/assets/css/public.css`: `.embed-responsive` (tỉ lệ 16:9, co giãn), `.attraction-card` (ảnh + mô tả), `.speaker-card`, `.contact-card`, bảng cuộn ngang trong khung riêng khi màn hẹp (trang không cuộn ngang)
-- [ ] T138 [US4] Thêm vào `public/assets/js/editor.js` mẫu khối "Điểm tham quan" (ảnh + tiêu đề + mô tả) chèn được bằng một nút trong TinyMCE (`templates` plugin hoặc nút tuỳ biến)
-- [ ] T139 [US4] Bổ sung nội dung mẫu `travel-info` trong `bin/seed.php` (vị trí trường, khoảng cách tới sân bay/trung tâm Hà Nội, phương tiện, bản đồ, video, 3 điểm tham quan); bổ sung assert vào `tests/Integration/Cli/SeedTest.php`
+- [X] T136 [P] [US4] Viết `src/Services/EmbedConverter.php` và nối vào `PageService` khi lưu (đổi link dán thành iframe hợp lệ trước khi lọc HTML)
+- [X] T137 [P] [US4] Thêm vào `public/assets/css/public.css`: `.embed-responsive` (tỉ lệ 16:9, co giãn), `.attraction-card` (ảnh + mô tả), `.speaker-card`, `.contact-card`, bảng cuộn ngang trong khung riêng khi màn hẹp (trang không cuộn ngang)
+- [X] T138 [US4] Thêm vào `public/assets/js/editor.js` mẫu khối "Điểm tham quan" (ảnh + tiêu đề + mô tả) chèn được bằng một nút trong TinyMCE (`templates` plugin hoặc nút tuỳ biến)
+- [X] T139 [US4] Bổ sung nội dung mẫu `travel-info` trong `bin/seed.php` (vị trí trường, khoảng cách tới sân bay/trung tâm Hà Nội, phương tiện, bản đồ, video, 3 điểm tham quan); bổ sung assert vào `tests/Integration/Cli/SeedTest.php`
 
 **Checkpoint**: Đại biểu có đủ thông tin đi lại và liên hệ trên điện thoại.
 

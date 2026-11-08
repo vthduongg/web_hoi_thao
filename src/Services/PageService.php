@@ -143,7 +143,8 @@ final class PageService
         return [
             'title' => trim($data['title']),
             'slug' => $data['slug'],
-            'body_html' => $this->sanitizer->clean($data['body_html'] ?? ''),
+            // Đổi link video/bản đồ thành khung nhúng trước, rồi mới lọc HTML
+            'body_html' => $this->sanitizer->clean(EmbedConverter::convert($data['body_html'] ?? '')),
             'module' => $data['module'],
             'seo_title' => ($data['seo_title'] ?? '') !== '' ? $data['seo_title'] : null,
             'seo_description' => ($data['seo_description'] ?? '') !== '' ? $data['seo_description'] : null,

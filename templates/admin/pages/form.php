@@ -54,7 +54,11 @@ $field = static fn (string $name): string => isset($errors[$name]) ? ' form-fiel
         <div class="form-field">
             <label for="body_html"><?= e(t('pages.field_body')) ?></label>
             <textarea id="body_html" name="body_html" data-rich-editor
-                      data-library-label="<?= e(t('pages.insert_from_library')) ?>"><?= e($values['body_html']) ?></textarea>
+                      data-library-label="<?= e(t('pages.insert_from_library')) ?>"
+                      data-attraction-label="<?= e(t('pages.insert_attraction')) ?>"
+                      data-attraction-title="<?= e(t('pages.attraction_title_placeholder')) ?>"
+                      data-attraction-description="<?= e(t('pages.attraction_description_placeholder')) ?>"><?= e($values['body_html']) ?></textarea>
+            <p class="form-field__hint"><?= e(t('pages.embed_hint')) ?></p>
         </div>
         <div class="form-field<?= $field('module') ?>">
             <label for="module"><?= e(t('pages.field_module')) ?></label>

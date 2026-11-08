@@ -27,8 +27,21 @@
 
   // data-rich-editor="compact": thanh công cụ rút gọn (ví dụ tiểu sử diễn giả)
   var isCompact = textarea.getAttribute('data-rich-editor') === 'compact';
-  var fullToolbar = 'undo redo | blocks | bold italic underline | bullist numlist | link image media table | library | code';
+  var fullToolbar = 'undo redo | blocks | bold italic underline | bullist numlist | link image media table | library attraction | code';
   var compactToolbar = 'undo redo | bold italic | bullist numlist | link';
+
+  // Nút "Điểm tham quan": chọn ảnh rồi chèn khối ảnh + tiêu đề + mô tả (người dùng sửa chữ ngay trong khối)
+  function insertAttraction(editor) {
+    window.MediaPicker.open('image', function (item) {
+      editor.insertContent(
+        '<div class="attraction-card">'
+        + '<img src="' + escapeHtml(item.url) + '" alt="' + escapeHtml(item.alt) + '">'
+        + '<h3>' + escapeHtml(textarea.getAttribute('data-attraction-title')) + '</h3>'
+        + '<p>' + escapeHtml(textarea.getAttribute('data-attraction-description')) + '</p>'
+        + '</div><p></p>'
+      );
+    });
+  }
 
   window.tinymce.init({
     target: textarea,
@@ -40,6 +53,7 @@
     plugins: 'lists table link image media code',
     menubar: false,
     toolbar: isCompact ? compactToolbar : fullToolbar,
+    toolbar_mode: 'wrap', // thanh công cụ xuống dòng thay vì giấu nút vào menu "…" (dễ thấy hơn với người mới)
     promotion: false,
     branding: false,
     height: isCompact ? 260 : 480,
@@ -54,6 +68,10 @@
       editor.ui.registry.addButton('library', {
         text: textarea.getAttribute('data-library-label'),
         onAction: function () { insertFromLibrary(editor); },
+      });
+      editor.ui.registry.addButton('attraction', {
+        text: textarea.getAttribute('data-attraction-label'),
+        onAction: function () { insertAttraction(editor); },
       });
     },
   });

@@ -92,10 +92,35 @@ final class SamplePages
                 'slug' => 'travel-info',
                 'title' => 'Travel Info',
                 'module' => 'none',
-                'body' => '<h2>Location</h2><p>Hanoi Pedagogical University 2 is in Phuc Yen, about 25 km from Noi Bai International Airport '
-                    . 'and 40 km from the centre of Hanoi.</p><h2>Getting there</h2><ul><li>Taxi from Noi Bai airport: about 35 minutes.</li>'
-                    . '<li>Bus from Hanoi city centre: about 75 minutes.</li></ul>',
+                'body' => self::travelInfoBody(),
             ],
         ];
+    }
+
+    /** Ảnh mẫu dùng cho các điểm tham quan (Seeder chép từ tests/fixtures vào thư viện). */
+    public const ATTRACTION_IMAGES = ['slide-1.jpg', 'slide-2.jpg', 'slide-3.jpg'];
+
+    /** Nội dung mẫu trang Travel Info: vị trí, khoảng cách, phương tiện, bản đồ, video, 3 điểm tham quan. */
+    private static function travelInfoBody(): string
+    {
+        $attractions = [
+            ['Tay Thien Temple', 'A historic temple complex in the Tam Dao mountains, about 30 km from the university.'],
+            ['Dai Lai Lake', 'A peaceful lake resort with forest and hills, about 15 km from the university.'],
+            ['Tam Dao Hill Station', 'A cool mountain town built in the early 20th century, about 45 km from the university.'],
+        ];
+        $cards = '';
+        foreach ($attractions as $index => [$name, $description]) {
+            $cards .= '<div class="attraction-card"><img src="/uploads/seed/' . self::ATTRACTION_IMAGES[$index] . '" alt="' . $name . '">'
+                . '<h3>' . $name . '</h3><p>' . $description . '</p></div>';
+        }
+
+        return '<h2>Location</h2><p>Hanoi Pedagogical University 2 is in Xuan Hoa, Phuc Yen, Vinh Phuc, '
+            . 'about 25 km from Noi Bai International Airport and 40 km from the centre of Hanoi.</p>'
+            . '<div class="embed-responsive"><iframe src="https://www.google.com/maps/embed?pb=!1m2!2m1!1sHanoi+Pedagogical+University+2" title="Map" width="560" height="315"></iframe></div>'
+            . '<h2>Getting there</h2><ul><li>Taxi from Noi Bai airport: about 35 minutes.</li>'
+            . '<li>Bus from Hanoi city centre: about 75 minutes.</li><li>Conference shuttle buses will be announced later.</li></ul>'
+            . '<h2>Video</h2><p>A video introducing the university will be added here. '
+            . '(Paste the YouTube link on its own line to embed it.)</p>'
+            . '<h2>Places to visit</h2>' . $cards;
     }
 }

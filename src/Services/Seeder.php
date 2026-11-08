@@ -285,6 +285,10 @@ final class Seeder
     /** @return array<string, int> slug => id trang */
     private function seedPages(int $conferenceId): array
     {
+        // Ảnh điểm tham quan dùng trong nội dung mẫu trang Travel Info
+        foreach (SamplePages::ATTRACTION_IMAGES as $index => $image) {
+            $this->copyFixtureToLibrary($image, $image, 'image/jpeg', 'image', 'Sample slide ' . ($index + 1));
+        }
         if (!$this->hasRows('pages', $conferenceId)) {
             foreach (SamplePages::all() as $page) {
                 $this->db->insert('pages', [
@@ -343,23 +347,8 @@ final class Seeder
         if ($this->hasRows('slides', $conferenceId)) {
             return;
         }
-        $targetDir = $this->rootDir . '/public/uploads/seed';
-        if (!is_dir($targetDir)) {
-            mkdir($targetDir, 0775, true);
-        }
         foreach ([1, 2, 3] as $number) {
-            $file = "slide-$number.jpg";
-            copy($this->rootDir . "/tests/fixtures/$file", "$targetDir/$file");
-            $mediaId = $this->db->insert('media_files', [
-                'original_name' => $file,
-                'stored_path' => "uploads/seed/$file",
-                'mime_type' => 'image/jpeg',
-                'size_bytes' => filesize("$targetDir/$file"),
-                'kind' => 'image',
-                'width' => 1200,
-                'height' => 450,
-                'alt_text' => "Sample slide $number",
-            ]);
+            $mediaId = $this->copyFixtureToLibrary("slide-$number.jpg", "slide-$number.jpg", 'image/jpeg', 'image', "Sample slide $number");
             $this->db->insert('slides', [
                 'conference_id' => $conferenceId,
                 'media_id' => $mediaId,

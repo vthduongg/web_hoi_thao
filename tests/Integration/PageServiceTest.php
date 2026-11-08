@@ -62,6 +62,14 @@ final class PageServiceTest extends DatabaseTestCase
         self::assertSame('<p>Hi</p>', $this->db->value('SELECT body_html FROM pages WHERE id = ?', [$id]));
     }
 
+    public function test_pasted_youtube_link_is_saved_as_responsive_iframe(): void
+    {
+        $id = $this->service->create($this->conferenceId, $this->data(['body_html' => '<p>https://youtu.be/abc123</p>']), null);
+
+        $body = (string) $this->db->value('SELECT body_html FROM pages WHERE id = ?', [$id]);
+        self::assertStringContainsString('<div class="embed-responsive"><iframe src="https://www.youtube-nocookie.com/embed/abc123"', $body);
+    }
+
     public function test_update_creates_new_revision_and_increments_version(): void
     {
         $id = $this->service->create($this->conferenceId, $this->data(), null);

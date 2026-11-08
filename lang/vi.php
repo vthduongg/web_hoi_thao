@@ -173,6 +173,10 @@ return [
     'pages.delete_confirm_button' => 'Vẫn xoá trang',
     'pages.alt_warning' => 'Có :count ảnh chưa có mô tả. Hãy bấm vào ảnh → "Chèn/sửa ảnh" để nhập mô tả rồi lưu lại.',
     'pages.insert_from_library' => 'Chèn từ thư viện',
+    'pages.insert_attraction' => 'Điểm tham quan',
+    'pages.attraction_title_placeholder' => 'Tên điểm tham quan',
+    'pages.attraction_description_placeholder' => 'Mô tả ngắn về điểm tham quan.',
+    'pages.embed_hint' => 'Muốn nhúng video YouTube hoặc bản đồ Google Maps: dán đường link vào một dòng riêng, hệ thống tự đổi thành khung nhúng khi lưu.',
     'pages.choose_image' => 'Chọn ảnh',
     'pages.remove_image' => 'Bỏ ảnh',
 

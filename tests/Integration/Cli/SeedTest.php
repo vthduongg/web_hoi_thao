@@ -162,6 +162,22 @@ final class SeedTest extends DatabaseTestCase
         self::assertSame(2, (int) $this->db->value('SELECT COUNT(*) FROM contact_persons WHERE conference_id = ?', [$id]));
     }
 
+    // ----- Dữ liệu mẫu US4 -----
+
+    public function test_travel_info_has_map_and_three_attractions_with_images(): void
+    {
+        $this->seeder()->run(reset: true);
+
+        $body = (string) $this->db->value("SELECT body_html FROM pages WHERE slug = 'travel-info' AND conference_id = ?", [$this->currentConferenceId()]);
+        self::assertStringContainsString('<div class="embed-responsive"><iframe src="https://www.google.com/maps/embed?', $body);
+        self::assertSame(3, substr_count($body, 'class="attraction-card"'));
+        self::assertStringContainsString('Noi Bai International Airport', $body);
+        foreach (['slide-1.jpg', 'slide-2.jpg', 'slide-3.jpg'] as $image) {
+            self::assertFileExists(dirname(__DIR__, 3) . '/public/uploads/seed/' . $image);
+            self::assertSame(1, (int) $this->db->value('SELECT COUNT(*) FROM media_files WHERE stored_path = ?', ['uploads/seed/' . $image]));
+        }
+    }
+
     public function test_does_not_steal_current_flag_from_existing_conference(): void
     {
         // Xoá hội thảo mẫu (nếu có) cùng dữ liệu con, để seed phải tạo hội thảo mẫu mới
