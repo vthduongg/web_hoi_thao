@@ -8,12 +8,11 @@ use App\Controllers\Controller;
 use App\Core\Response;
 use App\Models\Conference;
 use App\Models\Page;
-use App\Repositories\ImportantDateRepository;
 use App\Repositories\MenuRepository;
 use App\Repositories\PageRepository;
+use App\Services\ModuleDataLoader;
 use App\Services\PublicPageContext;
 use App\Services\RelatedPagesFinder;
-use App\Services\UpcomingDateFinder;
 
 /** Trang nội dung công khai: /{slug}. */
 final class PageController extends Controller
@@ -83,25 +82,12 @@ final class PageController extends Controller
     /** Template của khối dữ liệu hiển thị dưới nội dung trang (null = không có). */
     private function moduleTemplate(Page $page): ?string
     {
-        $supported = ['important_dates'];
-
-        return in_array($page->module, $supported, true) ? 'public/modules/' . $page->module : null;
+        return $page->module === 'none' ? null : 'public/modules/' . $page->module;
     }
 
     /** @return array<string, mixed> */
     private function moduleData(Page $page, Conference $conference): array
     {
-        return match ($page->module) {
-            'important_dates' => $this->importantDatesData($conference),
-            default => [],
-        };
-    }
-
-    /** @return array<string, mixed> */
-    private function importantDatesData(Conference $conference): array
-    {
-        $dates = (new ImportantDateRepository($this->services->db))->visibleForConference($conference->id);
-
-        return ['dates' => $dates, 'upcoming' => UpcomingDateFinder::find($dates)];
+        return (new ModuleDataLoader($this->services->db))->load($page, $conference);
     }
 }

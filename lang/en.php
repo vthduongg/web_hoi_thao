@@ -49,6 +49,23 @@ return [
     'share.copy_failed' => 'Could not copy the link',
     'related.title' => 'Related pages',
 
+    // Ban / hội đồng
+    'committees.no' => 'No.',
+    'committees.name' => 'Name',
+    'committees.position' => 'Position & Affiliation',
+    'committees.role' => 'Role',
+
+    // Diễn giả
+    'speakers.talk' => 'Keynote',
+
+    // Chương trình
+    'program.time' => 'Time',
+    'program.content' => 'Activity',
+    'program.presenter' => 'Presenter',
+    'program.room' => 'Room',
+    'program.download' => 'Download the conference program',
+    'program.image_alt' => 'Conference program',
+
     // Slider
     'slider.label' => 'Featured images',
     'slider.pause' => 'Pause slideshow',

@@ -45,6 +45,43 @@ function registerContentRoutes(Router $r): void
     $r->post('/admin/media/upload', 'Admin\\MediaController@upload', 'E');
 }
 
+/**
+ * Bộ route chuẩn cho một nhóm dữ liệu dùng CrudController:
+ * danh sách, thêm, sửa, Hiện/Ẩn, sắp xếp, xoá. $prefix có thể chứa tham số, ví dụ "/admin/committees/{committeeId}/members".
+ */
+function registerCrudRoutes(Router $r, string $prefix, string $controller, string $permission = 'E'): void
+{
+    $r->get($prefix, "$controller@index", $permission);
+    $r->get("$prefix/new", "$controller@create", $permission);
+    $r->post("$prefix/new", "$controller@store", $permission);
+    $r->post("$prefix/reorder", "$controller@reorder", $permission);
+    $r->get("$prefix/{id}", "$controller@edit", $permission);
+    $r->post("$prefix/{id}", "$controller@update", $permission);
+    $r->post("$prefix/{id}/toggle-visibility", "$controller@toggleVisibility", $permission);
+    $r->post("$prefix/{id}/delete", "$controller@delete", $permission);
+}
+
+/** Dữ liệu có cấu trúc: mốc thời gian, ban, diễn giả, chương trình, nhà tài trợ, người liên hệ (US3). */
+function registerStructuredDataRoutes(Router $r): void
+{
+    registerCrudRoutes($r, '/admin/dates', 'Admin\\DateController');
+    registerCrudRoutes($r, '/admin/committees', 'Admin\\CommitteeController');
+    registerCrudRoutes($r, '/admin/committees/{committeeId}/members', 'Admin\\CommitteeMemberController');
+    $r->get('/admin/committees/{committeeId}/import', 'Admin\\CommitteeImportController@show', 'E');
+    $r->post('/admin/committees/{committeeId}/import', 'Admin\\CommitteeImportController@import', 'E');
+    registerCrudRoutes($r, '/admin/speakers', 'Admin\\SpeakerController');
+
+    $r->get('/admin/program', 'Admin\\ProgramController@index', 'E');
+    $r->post('/admin/program/file', 'Admin\\ProgramController@saveFile', 'E');
+    registerCrudRoutes($r, '/admin/program/days', 'Admin\\ProgramDayController');
+    registerCrudRoutes($r, '/admin/program/days/{dayId}/sessions', 'Admin\\ProgramSessionController');
+    registerCrudRoutes($r, '/admin/program/sessions/{sessionId}/items', 'Admin\\ProgramItemController');
+
+    registerCrudRoutes($r, '/admin/sponsor-tiers', 'Admin\\SponsorTierController');
+    registerCrudRoutes($r, '/admin/sponsors', 'Admin\\SponsorController');
+    registerCrudRoutes($r, '/admin/contacts', 'Admin\\ContactController');
+}
+
 /** Chức năng chỉ dành cho quản trị viên. */
 function registerAdminOnlyRoutes(Router $r): void
 {
@@ -67,6 +104,7 @@ function registerPublicRoutes(Router $r): void
 return static function (Router $r): void {
     registerAuthRoutes($r);
     registerContentRoutes($r);
+    registerStructuredDataRoutes($r);
     registerAdminOnlyRoutes($r);
     registerPublicRoutes($r);
 };

@@ -61,7 +61,7 @@ Mỗi nhóm có cùng mẫu: `GET /admin/{nhóm}` (danh sách), `GET/POST /admin
 | `committees` | Ban; trong trang sửa ban có danh sách thành viên `…/committees/{id}/members/...` |
 | `committees/{id}/import` | GET form + link tệp mẫu tĩnh `/assets/templates/committee-import-template.xlsx` và `.csv`; POST nhận `.xlsx`/`.csv` (xem `import-format.md`) |
 | `speakers` | Diễn giả chính |
-| `program` | Ngày → phiên → mục (đường dẫn lồng `program/days/{id}/sessions/{id}/items/...`); `program/file` tải ảnh/PDF thay thế |
+| `program` | Tổng quan `GET /admin/program`; ngày `program/days/...`; phiên `program/days/{dayId}/sessions/...`; mục `program/sessions/{sessionId}/items/...`; `POST program/file` chọn ảnh/PDF chương trình thay thế từ thư viện |
 | `sponsors`, `sponsor-tiers` | Nhà tài trợ và hạng |
 | `contacts` | Người liên hệ |
 

@@ -104,9 +104,98 @@ final class Seeder
         $this->seedImportantDates($conferenceId);
         $pageIds = $this->seedPages($conferenceId);
         $this->seedMenu($conferenceId, $pageIds);
+        $this->seedCommittees($conferenceId, $pageIds);
+        $this->seedSpeakers($conferenceId);
+        $this->seedSponsors($conferenceId);
+        $this->seedContacts($conferenceId);
         if ($isTest) {
             $this->seedSlides($conferenceId);
             $this->seedTestOnlyContent($conferenceId);
+        }
+    }
+
+    // ----- US3: ban, diễn giả, nhà tài trợ, người liên hệ -----
+
+    /** @param array<string, int> $pageIds */
+    private function seedCommittees(int $conferenceId, array $pageIds): void
+    {
+        if ($this->hasRows('committees', $conferenceId)) {
+            return;
+        }
+        $committees = [
+            ['Steering Committee', 'organizing-committee', [['Assoc. Prof. Dr.', 'Nguyen Van A', 'Rector, Hanoi Pedagogical University 2', 'Chair']]],
+            ['Organizing Committee', 'organizing-committee', [['Dr.', 'Tran Thi B', 'Dean, Faculty of Foreign Languages', 'Head'], ['MA.', 'Le Van C', 'Faculty of Foreign Languages', 'Secretary']]],
+            ['Scientific Committee', 'scientific-committee', [['Prof. Dr.', 'Pham Thi D', 'Vietnam National University', 'Chair'], ['Dr.', 'John Smith', 'University of Queensland', 'Member']]],
+        ];
+        foreach ($committees as $index => [$name, $pageSlug, $members]) {
+            $committeeId = $this->db->insert('committees', ['conference_id' => $conferenceId, 'name' => $name, 'sort_order' => ($index + 1) * 10]);
+            if (isset($pageIds[$pageSlug])) {
+                $this->db->insertRow('page_committees', ['page_id' => $pageIds[$pageSlug], 'committee_id' => $committeeId]);
+            }
+            foreach ($members as $position => [$title, $fullName, $affiliation, $role]) {
+                $this->db->insert('committee_members', [
+                    'committee_id' => $committeeId, 'academic_title' => $title, 'full_name' => $fullName,
+                    'position_affiliation' => $affiliation, 'committee_role' => $role, 'sort_order' => ($position + 1) * 10,
+                ]);
+            }
+        }
+    }
+
+    private function seedSpeakers(int $conferenceId): void
+    {
+        if ($this->hasRows('keynote_speakers', $conferenceId)) {
+            return;
+        }
+        $speakers = [
+            ['Prof. Dr.', 'Jane Doe', 'University of Melbourne', 'Australia', 'Language teaching in the age of AI'],
+            ['Assoc. Prof. Dr.', 'Nguyen Thi E', 'Hanoi National University of Education', 'Vietnam', 'Teacher education for the 21st century'],
+        ];
+        foreach ($speakers as $index => [$title, $name, $affiliation, $country, $talk]) {
+            $this->db->insert('keynote_speakers', [
+                'conference_id' => $conferenceId, 'academic_title' => $title, 'full_name' => $name, 'affiliation' => $affiliation,
+                'country' => $country, 'talk_title' => $talk, 'bio_html' => '<p>Biography will be updated.</p>', 'sort_order' => ($index + 1) * 10,
+            ]);
+        }
+    }
+
+    private function seedSponsors(int $conferenceId): void
+    {
+        if ($this->hasRows('sponsor_tiers', $conferenceId)) {
+            return;
+        }
+        $logoId = $this->copyFixtureToLibrary('logo.png', 'sample-logo.png', 'image/png', 'image', 'Sample logo');
+        $tiers = [];
+        foreach (['Organizer', 'Co-organizer', 'Sponsor'] as $index => $tier) {
+            $tiers[$tier] = $this->db->insert('sponsor_tiers', ['conference_id' => $conferenceId, 'name' => $tier, 'sort_order' => ($index + 1) * 10]);
+        }
+        $sponsors = [
+            ['Organizer', 'Hanoi Pedagogical University 2', 'https://hpu2.edu.vn'],
+            ['Co-organizer', 'Partner University', null],
+            ['Sponsor', 'Example Publisher', 'https://publisher.example.com'],
+            ['Sponsor', 'Example Language Centre', null],
+        ];
+        foreach ($sponsors as $index => [$tier, $name, $website]) {
+            $this->db->insert('sponsors', [
+                'conference_id' => $conferenceId, 'sponsor_tier_id' => $tiers[$tier], 'name' => $name,
+                'logo_media_id' => $logoId, 'website_url' => $website, 'sort_order' => ($index + 1) * 10,
+            ]);
+        }
+    }
+
+    private function seedContacts(int $conferenceId): void
+    {
+        if ($this->hasRows('contact_persons', $conferenceId)) {
+            return;
+        }
+        $contacts = [
+            ['Dr. Tran Thi B', 'Faculty of Foreign Languages', 'contact1@example.edu.vn', '+84 912 345 678'],
+            ['MA. Le Van C', 'Faculty of Foreign Languages', 'contact2@example.edu.vn', '+84 987 654 321'],
+        ];
+        foreach ($contacts as $index => [$name, $affiliation, $email, $phone]) {
+            $this->db->insert('contact_persons', [
+                'conference_id' => $conferenceId, 'full_name' => $name, 'affiliation' => $affiliation,
+                'email' => $email, 'phone' => $phone, 'sort_order' => ($index + 1) * 10,
+            ]);
         }
     }
 

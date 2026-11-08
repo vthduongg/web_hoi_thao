@@ -144,6 +144,20 @@ html:not(.js) .menu-toggle { display: none; }
 .card__title { margin-top: 0; font-size: var(--text-lg); }
 @media (min-width: 600px) { .card-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); } }
 
+/* ===== 5b2. Khối dữ liệu: ban, diễn giả, chương trình, nhà tài trợ, liên hệ ===== */
+.committee { margin-top: var(--space-5); }
+.speaker-card__photo { display: block; width: 160px; height: 160px; object-fit: cover; border-radius: 50%; margin-bottom: var(--space-3); }
+.speaker-card__name { margin: 0 0 var(--space-1); font-size: var(--text-lg); color: var(--color-primary); }
+.speaker-card__affiliation { margin: 0 0 var(--space-2); color: var(--color-text-muted); }
+.program-day { margin-top: var(--space-5); }
+.program-table td:first-child { white-space: nowrap; }
+.sponsor-tier { margin-top: var(--space-5); }
+.sponsor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: var(--space-4); list-style: none; margin: 0; padding: 0; }
+.sponsor-grid__item { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); text-align: center; }
+.sponsor-grid__item img { max-height: 100px; width: auto; object-fit: contain; }
+.sponsor-grid__name { font-size: var(--text-sm); color: var(--color-text-muted); }
+.contact-email { font-size: var(--text-lg); }
+
 /* ===== 5c. Chia sẻ, trang liên quan ===== */
 .share-buttons { margin-top: var(--space-5); padding-top: var(--space-3); border-top: 1px solid var(--color-border); }
 .share-buttons__label { font-weight: 600; margin: 0 0 var(--space-2); }

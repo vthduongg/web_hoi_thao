@@ -25,6 +25,11 @@ final class Response
         return new self('', $status, ['Location' => $location]);
     }
 
+    public static function json(array $data, int $status = 200): self
+    {
+        return new self((string) json_encode($data, JSON_UNESCAPED_UNICODE), $status, ['Content-Type' => 'application/json; charset=UTF-8']);
+    }
+
     public static function text(string $body, string $contentType = 'text/plain; charset=UTF-8'): self
     {
         return new self($body, 200, ['Content-Type' => $contentType]);

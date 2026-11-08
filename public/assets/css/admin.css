@@ -82,6 +82,16 @@ img { max-width: 100%; height: auto; }
 .form-field__label { display: block; font-weight: 600; margin-bottom: var(--space-1); }
 .media-field__preview img { display: block; margin-bottom: var(--space-2); border: 1px solid var(--color-border); border-radius: var(--radius); }
 
+/* ===== 8b. Danh sách dùng chung (mốc, ban, diễn giả...) ===== */
+.crud-list { list-style: none; margin: 0; padding: 0; }
+.crud-list__item { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); padding: var(--space-2) var(--space-3); margin-bottom: var(--space-2); background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius); }
+.crud-list__item--hidden { opacity: 0.65; }
+.crud-list__main { flex: 1 1 260px; display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); align-items: baseline; }
+.crud-list__cell { color: var(--color-text-muted); font-size: var(--text-sm); }
+.crud-list__actions { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+.checkbox { display: block; margin: var(--space-1) 0; }
+.program-day h3 { font-size: var(--text-base); margin-top: var(--space-3); }
+
 /* ===== 9. Hộp chọn tệp ===== */
 .picker-page { padding: var(--space-4); }
 .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: var(--space-3); list-style: none; margin: var(--space-4) 0 0; padding: 0; }

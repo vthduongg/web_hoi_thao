@@ -25,6 +25,11 @@
     });
   }
 
+  // data-rich-editor="compact": thanh công cụ rút gọn (ví dụ tiểu sử diễn giả)
+  var isCompact = textarea.getAttribute('data-rich-editor') === 'compact';
+  var fullToolbar = 'undo redo | blocks | bold italic underline | bullist numlist | link image media table | library | code';
+  var compactToolbar = 'undo redo | bold italic | bullist numlist | link';
+
   window.tinymce.init({
     target: textarea,
     license_key: 'gpl',
@@ -34,10 +39,10 @@
     language_url: '/assets/vendor/tinymce/langs/vi.js',
     plugins: 'lists table link image media code',
     menubar: false,
-    toolbar: 'undo redo | blocks | bold italic underline | bullist numlist | link image media table | library | code',
+    toolbar: isCompact ? compactToolbar : fullToolbar,
     promotion: false,
     branding: false,
-    height: 480,
+    height: isCompact ? 260 : 480,
     relative_urls: false,
     convert_urls: false,
     image_description: true,

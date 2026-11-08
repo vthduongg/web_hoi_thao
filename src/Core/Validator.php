@@ -9,7 +9,8 @@ use DateTimeImmutable;
 /**
  * Kiểm tra dữ liệu biểu mẫu phía server.
  *
- * Quy tắc viết dạng chuỗi, ngăn cách bằng "|": required, max:N, min:N, email, url, date, datetime, in:a,b,c, integer.
+ * Quy tắc viết dạng chuỗi, ngăn cách bằng "|": required, max:N, min:N, email, url, date, datetime, time, in:a,b,c, integer,
+ * phone (chỉ số, khoảng trắng, + . -).
  * Mỗi trường chỉ báo lỗi đầu tiên gặp. Trường rỗng mà không "required" thì bỏ qua các quy tắc còn lại.
  */
 final class Validator
@@ -66,6 +67,7 @@ final class Validator
                 'time' => self::isDate((string) $value, 'H:i') ? null : $this->lang->get('validation.time'),
                 'in' => in_array((string) $value, explode(',', $argument), true) ? null : $this->lang->get('validation.in'),
                 'integer' => filter_var($value, FILTER_VALIDATE_INT) === false ? $this->lang->get('validation.integer') : null,
+                'phone' => preg_match('/^[0-9 +.\-]+$/', (string) $value) ? null : $this->lang->get('validation.phone'),
                 default => throw new \InvalidArgumentException("Quy tắc kiểm tra không tồn tại: $name"),
             };
             if ($error !== null) {

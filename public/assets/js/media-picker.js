@@ -50,14 +50,20 @@
     var preview = field.querySelector('[data-media-preview]');
 
     field.querySelector('[data-media-choose]').addEventListener('click', function () {
-      open('image', function (item) {
+      open(field.getAttribute('data-media-kind') || '', function (item) {
         input.value = item.id;
         preview.innerHTML = '';
-        var img = document.createElement('img');
-        img.src = item.previewUrl;
-        img.alt = item.alt || item.name;
-        img.width = 200;
-        preview.appendChild(img);
+        if (item.kind === 'image') {
+          var img = document.createElement('img');
+          img.src = item.previewUrl;
+          img.alt = item.alt || item.name;
+          img.width = 200;
+          preview.appendChild(img);
+        } else {
+          var name = document.createElement('span');
+          name.textContent = item.name;
+          preview.appendChild(name);
+        }
       });
     });
 

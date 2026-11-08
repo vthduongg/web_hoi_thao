@@ -12,7 +12,10 @@ use Tests\Support\DatabaseTestCase;
  */
 final class SeedTest extends DatabaseTestCase
 {
-    private const TABLES = ['conferences', 'users', 'important_dates', 'pages', 'menu_items', 'slides', 'media_files'];
+    private const TABLES = [
+        'conferences', 'users', 'important_dates', 'pages', 'menu_items', 'slides', 'media_files',
+        'committees', 'committee_members', 'page_committees', 'keynote_speakers', 'sponsor_tiers', 'sponsors', 'contact_persons',
+    ];
 
     private function seeder(): Seeder
     {
@@ -128,12 +131,44 @@ final class SeedTest extends DatabaseTestCase
         self::assertFileExists(dirname(__DIR__, 3) . '/public/uploads/seed/slide-1.jpg');
     }
 
+    // ----- Dữ liệu mẫu US3 -----
+
+    public function test_seeds_committees_attached_to_committee_pages(): void
+    {
+        $this->seeder()->run(reset: true);
+        $id = $this->currentConferenceId();
+
+        $byPage = $this->db->query(
+            'SELECT p.slug, c.name FROM page_committees pc JOIN pages p ON p.id = pc.page_id JOIN committees c ON c.id = pc.committee_id
+             WHERE c.conference_id = ? ORDER BY p.slug, c.sort_order',
+            [$id],
+        );
+        self::assertSame([
+            ['slug' => 'organizing-committee', 'name' => 'Steering Committee'],
+            ['slug' => 'organizing-committee', 'name' => 'Organizing Committee'],
+            ['slug' => 'scientific-committee', 'name' => 'Scientific Committee'],
+        ], $byPage);
+        self::assertSame(5, (int) $this->db->value('SELECT COUNT(*) FROM committee_members m JOIN committees c ON c.id = m.committee_id WHERE c.conference_id = ?', [$id]));
+    }
+
+    public function test_seeds_speakers_sponsors_and_contacts(): void
+    {
+        $this->seeder()->run(reset: true);
+        $id = $this->currentConferenceId();
+
+        self::assertSame(2, (int) $this->db->value('SELECT COUNT(*) FROM keynote_speakers WHERE conference_id = ?', [$id]));
+        self::assertSame(['Organizer', 'Co-organizer', 'Sponsor'], array_column($this->db->query('SELECT name FROM sponsor_tiers WHERE conference_id = ? ORDER BY sort_order', [$id]), 'name'));
+        self::assertSame(4, (int) $this->db->value('SELECT COUNT(*) FROM sponsors WHERE conference_id = ?', [$id]));
+        self::assertSame(2, (int) $this->db->value('SELECT COUNT(*) FROM contact_persons WHERE conference_id = ?', [$id]));
+    }
+
     public function test_does_not_steal_current_flag_from_existing_conference(): void
     {
         // Xoá hội thảo mẫu (nếu có) cùng dữ liệu con, để seed phải tạo hội thảo mẫu mới
         $this->seeder()->run(reset: true);
         $sampleId = $this->currentConferenceId();
-        foreach (['slides', 'menu_items', 'pages', 'important_dates'] as $table) {
+        $this->db->execute('DELETE FROM committee_members WHERE committee_id IN (SELECT id FROM committees WHERE conference_id = ?)', [$sampleId]);
+        foreach (['slides', 'menu_items', 'committees', 'pages', 'important_dates', 'keynote_speakers', 'sponsors', 'sponsor_tiers', 'contact_persons'] as $table) {
             $this->db->execute("DELETE FROM $table WHERE conference_id = ?", [$sampleId]);
         }
         $this->db->execute('DELETE FROM conferences WHERE id = ?', [$sampleId]);

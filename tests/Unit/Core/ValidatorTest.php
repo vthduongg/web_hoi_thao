@@ -63,6 +63,15 @@ final class ValidatorTest extends TestCase
         self::assertSame(['p' => 'Tối thiểu 8 ký tự.'], $this->validator->validate(['p' => 'short'], ['p' => 'min:8']));
     }
 
+    public function test_phone_and_time_rules(): void
+    {
+        self::assertSame([], $this->validator->validate(['p' => '+84 912.345-678', 't' => '08:30'], ['p' => 'phone', 't' => 'time']));
+        self::assertSame(
+            ['p' => 'Số điện thoại chỉ gồm số, khoảng trắng và các dấu + . -', 't' => 'Giờ không hợp lệ.'],
+            $this->validator->validate(['p' => '0912 abc', 't' => '25:00'], ['p' => 'phone', 't' => 'time']),
+        );
+    }
+
     public function test_optional_empty_fields_skip_format_rules(): void
     {
         self::assertSame([], $this->validator->validate(['email' => '', 'url' => null], ['email' => 'email', 'url' => 'url']));

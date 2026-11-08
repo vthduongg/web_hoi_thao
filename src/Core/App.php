@@ -100,7 +100,7 @@ final class App
         $class = str_starts_with($class, '\\') ? $class : 'App\\Controllers\\' . $class;
 
         /** @var Controller $controller */
-        $controller = new $class($this->services, $request);
+        $controller = new $class($this->services, $request, $match->params);
 
         return $controller->$method(...$match->params);
     }
